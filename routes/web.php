@@ -32,6 +32,11 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
          */
         Route::get('/login', 'LoginController@show')->name('login.show');
         Route::post('/login', 'LoginController@login')->name('login.perform');
+        /**
+         * Forgot Password Routes
+         */
+        Route::get('/forgot-password', 'LoginController@show')->name('forgot-password.show');
+        Route::post('/forgot-password', 'LoginController@login')->name('orgot-password.perform');
 
     });
 
