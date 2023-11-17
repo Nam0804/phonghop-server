@@ -35,7 +35,7 @@
         @include('layouts.partials.messages')
 
         <div class="form-group d-flex justify-content-evenly">
-            <button class="w-25 btn btn-lg btn-white" type="submit">Sign up</button>
+            <a href="{{route('register.show')}}" class="w-25 btn btn-lg btn-white">Sign up</a>
             <button class="w-25 btn btn-lg btn-red" type="submit">Login</button>
         </div>
 

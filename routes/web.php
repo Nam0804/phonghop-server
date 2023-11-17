@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,8 +37,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
         /**
          * Forgot Password Routes
          */
-        Route::get('/forgot-password', 'LoginController@show')->name('forgot-password.show');
-        Route::post('/forgot-password', 'LoginController@login')->name('orgot-password.perform');
+        // Route::get('/forgot-password', 'LoginController@show')->name('forgot-password.show');
+        // Route::post('/forgot-password', 'LoginController@login')->name('orgot-password.perform');
 
     });
 
@@ -45,5 +47,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
          * Logout Routes
          */
         Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
+        if ( Gate::allows('admin')) {
+            Route::get('/forgot-password-admin', 'LoginController@show')->name('forgot-password.show');
+        }
     });
 });
