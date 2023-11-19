@@ -16,6 +16,13 @@ use App\Http\Controllers\UserController;
 |
 */
 
+// Public Route
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);
-Route::resource('users', UserController::class)->middleware('auth:sanctum');
+Route::post('/auth/forgot-password', [AuthController::class, 'forgotPassword']);
+
+// Authenticated Route
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/auth/logout', [AuthController::class, 'logout']);
+    Route::resource('users', UserController::class);
+});

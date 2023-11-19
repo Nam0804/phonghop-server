@@ -12,102 +12,23 @@ use Illuminate\Auth\Events\Login;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
+
 
 class AuthController extends Controller
 {
-    // /**
-    //  * Create User
-    //  * @param Request $request
-    //  * @return User
-    //  */
-    // public function createUser(Request $request)
-    // {
-    //     try {
-    //         //Validated
-    //         $validateUser = Validator::make($request->all(),
-    //         [
-    //             'name' => 'required',
-    //             'email' => 'required|email|unique:users,email',
-    //             'password' => 'required'
-    //         ]);
-
-    //         if($validateUser->fails()){
-    //             return response()->json([
-    //                 'status' => false,
-    //                 'message' => 'Can not Create User',
-    //                 'errors' => $validateUser->errors()
-    //             ], 401);
-    //         }
-
-    //         $user = User::create([
-    //             'name' => $request->name,
-    //             'email' => $request->email,
-    //             'password' => Hash::make($request->password)
-    //         ]);
-
-    //         return response()->json([
-    //             'status' => true,
-    //             'message' => 'User Created Successfully',
-    //             'token' => $user->createToken("API TOKEN")->plainTextToken
-    //         ], 200);
-
-    //     } catch (\Throwable $th) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => $th->getMessage()
-    //         ], 500);
-    //     }
-    // }
-
-    // /**
-    //  * Login The User
-    //  * @param Request $request
-    //  * @return User
-    //  */
-    // public function loginUser(Request $request)
-    // {
-    //     try {
-    //         $validateUser = Validator::make($request->all(),
-    //         [
-    //             'email' => 'required|email',
-    //             'password' => 'required'
-    //         ]);
-
-    //         if($validateUser->fails()){
-    //             return response()->json([
-    //                 'status' => false,
-    //                 'message' => 'Please Provide Valid Email & Password',
-    //                 'errors' => $validateUser->errors()
-    //             ], 401);
-    //         }
-
-    //         if(!Auth::attempt($request->only(['email', 'password']))){
-    //             return response()->json([
-    //                 'status' => false,
-    //                 'message' => 'Email or password is incorrect, kindly check again!',
-    //             ], 401);
-    //         }
-
-    //         $user = User::where('email', $request->email)->first();
-
-    //         return response()->json([
-    //             'status' => true,
-    //             'message' => 'User Logged In Successfully',
-    //             'token' => $user->createToken("API TOKEN")->plainTextToken
-    //         ], 200);
-
-    //     } catch (\Throwable $th) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => $th->getMessage()
-    //         ], 500);
-    //     }
-    // }
     use HttpResponses;
     public function login(LoginUserRequest $request){
         $request->validated($request->all());
-
+        if(!Auth::attempt([$request->only('email','password')])){
+            return $this->error('','Credentials not match',401);
+        }
+        $user = User::where('email',$request->email)->first();
+        return $this->success([
+            'user'=>$user,
+            'token'=> $user->createToken('API Token')->plainTextToken,
+        ]);
     }
     public function register(StoreUserRequest $request){
         $request->validated($request->all());
@@ -123,6 +44,20 @@ class AuthController extends Controller
         ]);
     }
     public function logout(){
+        Auth::user()->currentAccessToken()->delete();
+        return $this->success([
+            'message'=>'You have successfully been logged out.'
+        ]);
+    }
+    public function forgotPassword(Request $request){
+        $request->validate(['email' => 'required|email']);
 
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        return $status === Password::RESET_LINK_SENT
+                    ? back()->with(['status' => __($status)])
+                    : back()->withErrors(['email' => __($status)]);
     }
 }
