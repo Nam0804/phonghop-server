@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
+
 
 
 /*
@@ -51,4 +53,5 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
             Route::get('/forgot-password-admin', 'LoginController@show')->name('forgot-password.show');
         }
     });
+    Route::get('reset-password/{token}',[AuthController::class,'resetPassword'])->name('reset-password');
 });

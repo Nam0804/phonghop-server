@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('role');
             $table->string('password');
             $table->rememberToken();
+            $table->integer('is_first_login');
             $table->timestamps();
         });
     }
