@@ -71,9 +71,9 @@ class AuthController extends Controller
             $message->to($request->email);
             $message->subject('Reset Password');
         });
-        return $this->success([
+        return $this->success('',[
             'message'=> 'We have e-mailed your password reset link!'
-        ]);
+        ],200);
 
     }
     public function showResetPasswordForm($token) {
@@ -94,16 +94,18 @@ class AuthController extends Controller
             ->first();
 
         if(!$updatePassword){
-            return back()->withInput()->with('error', 'Invalid token!');
+            return $this->error('',[
+                'message'=>'Invalid token!'
+            ],401);
         }
-
+        // dd('hello');
         $user = User::where('email', $request->email)
             ->update(['password' => Hash::make($request->password)]);
 
         DB::table('password_resets')->where(['email'=> $request->email])->delete();
 
-        return $this->success([
+        return $this->success('',[
             'message'=>'You have successfully changed password'
-        ]);
+        ],200);
     }
 }
