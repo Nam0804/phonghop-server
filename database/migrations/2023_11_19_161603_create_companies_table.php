@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('company_name', 100);
             $table->string('company_address', 100);
             $table->string('company_domain', 100);
-            $table->string('tax_code', 100);
+            $table->string('tax_code', 100)->nullable();
             $table->timestamps();
         });
     }
