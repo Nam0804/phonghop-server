@@ -23,38 +23,42 @@ use Illuminate\Support\Str;
 class AuthController extends Controller
 {
     use HttpResponses;
-    public function login(LoginUserRequest $request){
+    public function login(LoginUserRequest $request)
+    {
         $request->validated($request->all());
         if (!Auth::attempt(['email' => $request->email, 'password' => $request->input('password')])) {
-            return $this->error('','Credentials not match email',401);
+            return $this->error('', 'Credentials not match email', 401);
         }
-        $user = User::where('email',$request->email)->first();
+        $user = User::where('email', $request->email)->first();
         return $this->success([
-            'user'=>$user,
-            'token'=> $user->createToken('API Token')->plainTextToken,
+            'user' => $user,
+            'token' => $user->createToken('API Token')->plainTextToken,
         ]);
     }
-    public function register(StoreUserRequest $request){
+    public function register(StoreUserRequest $request)
+    {
         $request->validated($request->all());
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password'=> Hash::make($request->password),
-            'role'=>2,
-            'is_first_login'=> 0
+            'password' => Hash::make($request->password),
+            'role' => 2,
+            'is_first_login' => 0
         ]);
         return $this->success([
-            'user'=>$user,
-            'token'=> $user->createToken('API Token')->plainTextToken,
+            'user' => $user,
+            'token' => $user->createToken('API Token')->plainTextToken,
         ]);
     }
-    public function logout(){
+    public function logout()
+    {
         Auth::user()->currentAccessToken()->delete();
         return $this->success([
-            'message'=>'You have successfully been logged out.'
+            'message' => 'You have successfully been logged out.'
         ]);
     }
-    public function forgetPassword(Request $request){
+    public function forgetPassword(Request $request)
+    {
         $request->validate([
             'email' => 'required|email|exists:users',
         ]);
@@ -67,19 +71,20 @@ class AuthController extends Controller
             'created_at' => Carbon::now()
         ]);
 
-        Mail::send('email.forgetPassword', ['token' => $token], function($message) use($request){
+        Mail::send('email.forgetPassword', ['token' => $token], function ($message) use ($request) {
             $message->to($request->email);
             $message->subject('Reset Password');
         });
-        return $this->success('',[
-            'message'=> 'We have e-mailed your password reset link!'
-        ],200);
-
+        return $this->success('', [
+            'message' => 'We have e-mailed your password reset link!'
+        ], 200);
     }
-    public function showResetPasswordForm($token) {
+    public function showResetPasswordForm($token)
+    {
         return view('auth.forgetPasswordLink', ['token' => $token]);
     }
-    public function submitResetPasswordForm(Request $request){
+    public function submitResetPasswordForm(Request $request)
+    {
         $request->validate([
             'email' => 'required|email|exists:users',
             'password' => 'required|string|min:6|confirmed',
@@ -93,19 +98,19 @@ class AuthController extends Controller
             ])
             ->first();
 
-        if(!$updatePassword){
-            return $this->error('',[
-                'message'=>'Invalid token!'
-            ],401);
+        if (!$updatePassword) {
+            return $this->error('', [
+                'message' => 'Invalid token!'
+            ], 401);
         }
         // dd('hello');
         $user = User::where('email', $request->email)
             ->update(['password' => Hash::make($request->password)]);
 
-        DB::table('password_resets')->where(['email'=> $request->email])->delete();
+        DB::table('password_resets')->where(['email' => $request->email])->delete();
 
-        return $this->success('',[
-            'message'=>'You have successfully changed password'
-        ],200);
+        return $this->success('', [
+            'message' => 'You have successfully changed password'
+        ], 200);
     }
 }
