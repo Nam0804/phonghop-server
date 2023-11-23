@@ -1,22 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Auth;
 
-use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
+use App\Models\User;
 use App\Traits\HttpResponses;
-use Illuminate\Auth\Events\Login;
-use Illuminate\Contracts\Cache\Store;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 
@@ -25,6 +21,7 @@ class AuthController extends Controller
     use HttpResponses;
     public function login(LoginUserRequest $request){
         $request->validated($request->all());
+        dd(Auth::manager());
         if (!Auth::attempt(['email' => $request->email, 'password' => $request->input('password')])) {
             return $this->error('','Credentials not match email',401);
         }

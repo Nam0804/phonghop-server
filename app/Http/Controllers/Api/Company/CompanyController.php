@@ -16,13 +16,13 @@ class CompanyController extends Controller
     /**
      * Check if the user is authorized to access this company
      */
-    // private function isNotAuthorized(Company $company)
-    // {
-    //     if (!Auth::user()->isManager() && Auth::user()->company_id !== $company->id) {
-    //         return $this->error('','You are not authorized to access this company', 403);
-    //     }
+    private function isNotAuthorized(Company $company)
+    {
+        if (!Auth::user()->isManager() && Auth::user()->company_id !== $company->id) {
+            return $this->error('','You are not authorized to access this company', 403);
+        }
 
-    // }
+    }
     /**
      * Display a listing of the resource.
      */
@@ -37,13 +37,13 @@ class CompanyController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreCompanyRequest $request)
     {
         $company = Company::create($request->validated());
 
-        return response()->json([
+        return $this->success([
             'data' => new CompanyResource($company),
             'message' => 'Company created successfully',
         ], 201);
@@ -53,7 +53,7 @@ class CompanyController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     *
      */
     public function show(Company $company)
     {

@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Company\CompanyController;
+use App\Http\Controllers\Api\User\UserApiController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,10 +23,11 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/forget-password', [AuthController::class, 'forgetPassword']);
 Route::get('/reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('reset.password.get');
 Route::post('/auth/reset-password', [AuthController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+Route::resource('companies', CompanyController::class);
+
 // Authenticated Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/auth/logout', [AuthController::class, 'logout']);
     Route::resource('users', UserController::class);
-    Route::resource('companies', CompanyController::class);
-
+    Route::resource('users', UserApiController::class);
 });

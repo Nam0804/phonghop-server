@@ -22,7 +22,8 @@ class User extends Authenticatable
         'email',
         'role',
         'password',
-        'is_first_login'
+        'is_first_login',
+        'company_id',
     ];
 
     /**
@@ -45,11 +46,17 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    /**
-     * Always encrypt the password when it is updated.
-     *
-     * @param $value
-     * @return string
-     */
+    public function isManager():bool
+    {
+        if (!$this->role === 1) {
+            return false;
+        }
+        return true;
+    }
+//    relationship with 1 company
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
 
 }
