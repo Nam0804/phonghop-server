@@ -11,5 +11,6 @@ interface BaseUserRepository
     public function update(array $data, string $id): bool;
     public function delete(string $id): bool;
     public function show(string $id): User;
+    public function CompanyUsers(string $company_id): LengthAwarePaginator;
 
 }
