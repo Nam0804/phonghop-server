@@ -25,14 +25,14 @@ class CompanyResource extends JsonResource
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
             ],
-            'relationships' => [
-                'manager' => [
-                    'data' => [
-                        'id' => $this->manager->id,
-                        'manager_name' => $this->manager->name,
-                    ],
-                ],
-            ],
+            // 'relationships' => [
+            //     'manager' => [
+            //         'data' => [
+            //             'id' => $this->manager->id,
+            //             'manager_name' => $this->manager->name,
+            //         ],
+            //     ],
+            // ],
         ];
     }
 }

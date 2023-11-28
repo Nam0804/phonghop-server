@@ -3,20 +3,31 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use App\Repository\BaseUserRepository;
+use Illuminate\Support\Facades\Hash;
+
 
 class UserApiController extends Controller
 {
+    use HttpResponses;
+
+    protected $user;
+    public function __construct(BaseUserRepository $user)
+    {
+        $this->user = $user;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return UserResource::collection(
-            User::all()
-        );
+        $users = $this->user->list();
+        return $users;
     }
 
     /**
@@ -30,9 +41,20 @@ class UserApiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+        $request->validated($request->all());
+        $user = $this->user->create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password'=> Hash::make($request->password),
+        'role'=>2,
+        'company_id'=>$request->company_id,
+        'is_first_login'=> 0]);
+        return $this->success([
+            'data' => new UserResource($user),
+            'message' => 'User created successfully',
+        ], 200);
     }
 
     /**
@@ -40,7 +62,11 @@ class UserApiController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = $this ->user->show($id);
+        return $this->success([
+            'data' => new UserResource($user),
+            'message' => null,
+        ], 201);
     }
 
     /**
@@ -56,7 +82,11 @@ class UserApiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = $this->user->update($request->all(),$id);
+        return $this->success([
+            'data' => new UserResource($user),
+            'message' => 'User updated successfully',
+        ], 200);
     }
 
     /**
@@ -64,6 +94,10 @@ class UserApiController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = $this->user->delete($id);
+        return $this->success([
+            'data' => null,
+            'message' => 'User deleted successfully',
+        ], 200);
     }
 }

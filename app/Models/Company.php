@@ -20,14 +20,16 @@ class Company extends Model
         'company_name',
         'company_address',
         'company_domain',
-        'tax_code'
+        'tax_code',
     ];
 
-    // relationship one to one with manager
+    // relationship one to one with manager_id
     public function manager()
     {
-        return $this->hasOne(Manager::class, 'company_id', 'id');
+        return $this->hasOne(Manager::class);
     }
+
+
 //    relationship with many users
     public function users()
     {

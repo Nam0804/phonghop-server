@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('company_address', 100);
             $table->string('company_domain', 100);
             $table->string('tax_code', 100)->nullable();
-            $table->foreignId('manager_id')->constrained();
+            // $table->foreignId('manager_id')->constrained();
             $table->timestamps();
         });
     }

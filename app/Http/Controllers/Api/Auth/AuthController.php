@@ -21,7 +21,6 @@ class AuthController extends Controller
     use HttpResponses;
     public function login(LoginUserRequest $request){
         $request->validated($request->all());
-        dd(Auth::manager());
         if (!Auth::attempt(['email' => $request->email, 'password' => $request->input('password')])) {
             return $this->error('','Credentials not match email',401);
         }
@@ -38,6 +37,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'password'=> Hash::make($request->password),
             'role'=>2,
+            'company_id' => $request->company_id,
             'is_first_login'=> 0
         ]);
         return $this->success([
