@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('email')->unique();
+            $table->string('phone');
             $table->integer('role');
-            //  role = 1 is manager, role = 2 is employee
+//            2 roles: 1 for manager, 2 for employee
             $table->string('password');
-            // foreign key to company
             $table->foreignId('company_id')->constrained();
             $table->rememberToken();
             $table->integer('is_first_login');

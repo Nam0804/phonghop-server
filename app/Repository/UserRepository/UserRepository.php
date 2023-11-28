@@ -1,9 +1,8 @@
 <?php
-namespace App\Repository;
+namespace App\Repository\UserRepository;
 
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
-use App\Repository\BaseUserRepository;
 
 class UserRepository implements BaseUserRepository
 {

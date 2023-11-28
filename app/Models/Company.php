@@ -23,16 +23,14 @@ class Company extends Model
         'tax_code',
     ];
 
-    // relationship one to one with manager_id
-    public function manager()
-    {
-        return $this->hasOne(Manager::class);
-    }
-
 
 //    relationship with many users
     public function users()
     {
         return $this->hasMany(User::class, 'company_id', 'id');
+    }
+
+    public function manager(){
+        return $this->hasOne(User::class, 'company_id', 'id')->where('role', 1);
     }
 }

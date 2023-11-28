@@ -77,9 +77,9 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        if ($this->isNotAuthorized($company)) {
-            return $this->isNotAuthorized($company);
-        }
+//        if ($this->isNotAuthorized($company)) {
+//            return $this->isNotAuthorized($company);
+//        }
 
         $company->delete();
         return $this->success(null,'Company deleted successfully',200);

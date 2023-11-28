@@ -23,6 +23,7 @@ class User extends Authenticatable
         'role',
         'password',
         'is_first_login',
+        'phone',
         'company_id',
     ];
 
@@ -45,10 +46,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
+//    check if user is manager
     public function isManager():bool
     {
-        if (!$this->role === 1) {
+        if (!$this->role == 1) {
             return false;
         }
         return true;

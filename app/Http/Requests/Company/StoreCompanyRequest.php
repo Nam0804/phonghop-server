@@ -26,7 +26,6 @@ class StoreCompanyRequest extends FormRequest
             'company_address' => 'required|string|max:255',
             'company_domain' => 'required|string|max:255',
             'company_tax_code' => 'string|max:255',
-            'manager_id' => 'integer',
         ];
     }
 }
