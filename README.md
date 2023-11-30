@@ -8,3 +8,20 @@ Once we create a new release we will create a pull request from `develop` to the
 * Every new change needs to be in a seperated branch
 * Branch name example: [feature/hotfix/bug/..etc]/[issue number]-issue-title (e.g. feature/112-adding-login-page)
 * Merge request name example: [issue number] | issue title (e.g. 112 | Adding login page)
+
+#### Code syntax example
+```
+
+$foo = true;
+
+if($foo) {
+    echo 'Show first item';
+} else {
+    echo 'Show second item';
+}
+
+foreach($datas as $data) {
+    echo 'Line: ' . $data. "\n";
+}
+
+```

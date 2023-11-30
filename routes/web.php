@@ -1,10 +1,9 @@
 <?php
 
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\Api\Auth\AuthController;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
-
 
 
 /*

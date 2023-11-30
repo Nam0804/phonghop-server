@@ -41,6 +41,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'password'=> Hash::make($request->password),
             'role'=>2,
+            'company_id' => $request->company_id,
             'is_first_login'=> 0
         ]);
         return $this->success([
