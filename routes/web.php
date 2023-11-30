@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
@@ -21,7 +22,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
     /**
      * Home Routes
      */
-    Route::get('/', 'HomeController@index')->name('home.index');
+    // Route::get('/', 'HomeController@index')->name('home.index');
 
     Route::group(['middleware' => ['guest']], function() {
         /**
@@ -53,4 +54,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
         }
     });
     Route::get('reset-password/{token}',[AuthController::class,'resetPassword'])->name('reset-password');
+    Route::get('send-mail', [MailController::class, 'sendMail']);
 });
+

@@ -17,3 +17,9 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('send-register-mail', function () {
+    \Illuminate\Support\Facades\Mail::to('trungson2407@gmail.com')
+        ->send(new \App\Mail\SendMail('Trung Dinh',
+            'trungdq2407@gmail.com'));
+});
