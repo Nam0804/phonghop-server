@@ -1,41 +1,41 @@
 <?php
 
-namespace App\Http\Controllers\Api\User;
+namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Resources\UserResource;
-use App\Repository\UserRepository\BaseUserRepository;
+use App\Http\Requests\StoreAdminRequest;
+use App\Http\Resources\AdminResource;
+use App\Repository\AdminRepository\BaseAdminRepository;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 
-class UserApiController extends Controller
+class AdminApiController extends Controller
 {
     use HttpResponses;
 
-    protected $user;
-    public function __construct(BaseUserRepository $user)
+    protected $admin;
+    public function __construct(BaseAdminRepository $admin)
     {
-        $this->user = $user;
+        $this->admin = $admin;
     }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users = $this->user->list();
-        return $users;
+        $admins = $this->admin->list();
+        return $admins;
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreAdminRequest $request)
     {
         $request->validated($request->all());
-        $user = $this->user->create([
+        $admin = $this->admin->create([
         'name' => $request->name,
         'email' => $request->email,
         'password'=> Hash::make($request->password),
@@ -44,8 +44,8 @@ class UserApiController extends Controller
         'company_id'=>$request->company_id,
         'is_first_login'=> 0]);
         return $this->success([
-            'data' => new UserResource($user),
-            'message' => 'User created successfully',
+            'data' => new AdminResource($admin),
+            'message' => 'Admin created successfully',
         ], 200);
     }
 
@@ -54,9 +54,9 @@ class UserApiController extends Controller
      */
     public function show(string $id)
     {
-        $user = $this ->user->show($id);
+        $admin = $this ->admin->show($id);
         return $this->success([
-            'data' => new UserResource($user),
+            'data' => new AdminResource($admin),
             'message' => null,
         ], 201);
     }
@@ -66,10 +66,10 @@ class UserApiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $user = $this->user->update($request->all(),$id);
+        $admin = $this->admin->update($request->all(),$id);
         return $this->success([
-            'data' => new UserResource($user),
-            'message' => 'User updated successfully',
+            'data' => new AdminResource($admin),
+            'message' => 'Admin updated successfully',
         ], 200);
     }
 
@@ -78,17 +78,17 @@ class UserApiController extends Controller
      */
     public function destroy(string $id)
     {
-        $user = $this->user->delete($id);
+        $admin = $this->admin->delete($id);
         return $this->success([
             'data' => null,
-            'message' => 'User deleted successfully',
+            'message' => 'Admin deleted successfully',
         ], 200);
     }
-    public function CompanyUsers(string $company_id)
+    public function CompanyAdmins(string $company_id)
     {
-        $users = $this->user->CompanyUsers($company_id);
+        $admins = $this->admin->CompanyAdmins($company_id);
         return $this->success([
-            'data' => UserResource::collection($users),
+            'data' => AdminResource::collection($admins),
             'message' => null,
         ], 200);
     }
