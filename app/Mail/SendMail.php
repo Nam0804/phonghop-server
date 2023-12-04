@@ -14,15 +14,17 @@ use Symfony\Component\Mime\Header\UnstructuredHeader;
 class SendMail extends Mailable
 {
     use Queueable, SerializesModels;
-    protected string $name;
+    protected string $password;
     protected string $rescipientMail;
+    protected string $email_verified_token;
     /**
      * Create a new message instance.
      */
-    public function __construct(string $name, string $rescipientMail)
+    public function __construct(string $rescipientMail, string $password, string $email_verified_token)
     {
-        $this->name = $name;
+        $this->password = $password;
         $this->rescipientMail = $rescipientMail;
+        $this->email_verified_token = $email_verified_token;
     }
 
     /**
@@ -54,7 +56,12 @@ class SendMail extends Mailable
     {
         return new Content(
             view: 'email.registerMail',
-            with: ['name' => $this->name],
+            with:
+            [
+            'password' => $this->password,
+            'email_verified_token' => $this->email_verified_token,
+            'email'=>$this->rescipientMail
+            ],
         );
     }
 

@@ -29,7 +29,7 @@ class StoreUserRequest extends FormRequest
             'password'=>['required', 'string', 'min:8', 'confirmed',Rules\Password::defaults()],
             'company_id'=>['required', 'integer'],
             'phone'=>['required', 'numeric'],
-            'role'=>['required','integer'],
+            'type'=>['required','integer'],
         ];
     }
 }

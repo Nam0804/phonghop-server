@@ -20,11 +20,14 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'role',
+        'type',
+        'title',
         'password',
         'is_first_login',
         'phone',
         'company_id',
+        'email_verified_token',
+        'email_verified_at',
     ];
 
     /**
@@ -49,7 +52,7 @@ class User extends Authenticatable
 //    check if user is manager
     public function isManager():bool
     {
-        if (!$this->role == 1) {
+        if (!$this->type == 1) {
             return false;
         }
         return true;

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
+use App\Mail\SendMail;
 use App\Traits\HttpResponses;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Contracts\Cache\Store;
@@ -34,27 +35,36 @@ class AuthController extends Controller
             'token'=> $user->createToken('API Token')->plainTextToken,
         ]);
     }
+
     public function register(StoreUserRequest $request){
         $request->validated($request->all());
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'title'=>$request->title,
             'password'=> Hash::make($request->password),
-            'role'=>2,
+            'type'=>$request->type,
+            'phone'=> $request->phone,
             'company_id' => $request->company_id,
-            'is_first_login'=> 0
+            'is_first_login'=> 1,
+            'email_verified_token' => Str::random(30),
         ]);
-        return $this->success([
-            'user'=>$user,
-            'token'=> $user->createToken('API Token')->plainTextToken,
-        ]);
+        if($user){
+            Mail::to($user->email)->send(new SendMail($user->email,$request->password, $user->email_verified_token));
+            return $this->success([
+                'user'=>$user,
+                'token'=> $user->createToken('API Token')->plainTextToken,
+            ],201);
+        }else return $this->error("Can't register",null,404);
     }
+
     public function logout(){
         Auth::user()->currentAccessToken()->delete();
         return $this->success([
             'message'=>'You have successfully been logged out.'
         ]);
     }
+
     public function forgetPassword(Request $request){
         $request->validate([
             'email' => 'required|email|exists:users',
@@ -77,9 +87,11 @@ class AuthController extends Controller
         ],200);
 
     }
+
     public function showResetPasswordForm($token) {
         return view('auth.forgetPasswordLink', ['token' => $token]);
     }
+
     public function submitResetPasswordForm(Request $request){
         $request->validate([
             'email' => 'required|email|exists:users',
@@ -99,7 +111,6 @@ class AuthController extends Controller
                 'message'=>'Invalid token!'
             ],401);
         }
-        // dd('hello');
         $user = User::where('email', $request->email)
             ->update(['password' => Hash::make($request->password)]);
 

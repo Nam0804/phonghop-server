@@ -9,7 +9,7 @@ use App\Repository\UserRepository\BaseUserRepository;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Mail;
 
 class UserApiController extends Controller
 {
@@ -36,13 +36,20 @@ class UserApiController extends Controller
     {
         $request->validated($request->all());
         $user = $this->user->create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password'=> Hash::make($request->password),
-        'role'=>$request->role,
-        'phone'=>$request->phone,
-        'company_id'=>$request->company_id,
-        'is_first_login'=> 0]);
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'type' => $request->type,
+            'phone' => $request->phone,
+            'company_id' => $request->company_id,
+            'is_first_login' => 0
+        ]);
+        if ($user) {
+            Mail::send('email.registerMail', ['email' => $request->email, 'password' => $request->password], function ($message) use ($request) {
+                $message->to($request->email);
+                $message->subject('Register Password');
+            });
+        }
         return $this->success([
             'data' => new UserResource($user),
             'message' => 'User created successfully',
@@ -54,7 +61,7 @@ class UserApiController extends Controller
      */
     public function show(string $id)
     {
-        $user = $this ->user->show($id);
+        $user = $this->user->show($id);
         return $this->success([
             'data' => new UserResource($user),
             'message' => null,
@@ -66,7 +73,7 @@ class UserApiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $user = $this->user->update($request->all(),$id);
+        $user = $this->user->update($request->all(), $id);
         return $this->success([
             'data' => new UserResource($user),
             'message' => 'User updated successfully',
@@ -91,5 +98,23 @@ class UserApiController extends Controller
             'data' => UserResource::collection($users),
             'message' => null,
         ], 200);
+    }
+    public function confirmAccount($id)
+    {
+        $user = $this->user->confirmAccount($id);
+        return $this->success([
+            'data' => $user,
+            'message' => 'Account confirmed successfully',
+        ], 200);
+    }
+    public function verifyEmail($token)
+    {
+        $user = $this->user->confirmAccount($token);
+
+        if (!$user) {
+            return response()->json(['message' => 'Invalid verification token.'], 400);
+        }
+
+        return response()->json(['message' => 'Email verified successfully.'], 200);
     }
 }

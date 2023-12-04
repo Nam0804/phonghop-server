@@ -33,6 +33,11 @@ class UserRepository implements BaseUserRepository
     }
     public function  CompanyUsers(string $company_id): LengthAwarePaginator
     {
-        return User::where('company_id',$company_id)->where('role','!=',1)->paginate(10);
+        return User::where('company_id',$company_id)->where('type','!=',1)->paginate(10);
+    }
+
+    public function confirmAccount(string $token): bool
+    {
+        return User::where('email_verified_token', $token)->update(['is_first_login' => 0,'email_verified_at' => now(),'email_verified_token' => null]);
     }
 }
