@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CompanyResource extends JsonResource
+class CompanyManagerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -25,6 +25,14 @@ class CompanyResource extends JsonResource
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
             ],
+             'relationships' => [
+                 'manager' => [
+                     'data' => [
+                         'id' => $this->manager->id,
+                         'manager_name' => $this->manager->name,
+                     ],
+                 ],
+             ],
         ];
     }
 }

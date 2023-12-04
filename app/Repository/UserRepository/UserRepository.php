@@ -31,4 +31,9 @@ class UserRepository implements BaseUserRepository
     {
         return User::findOrFail($id);
     }
+
+    public function confirmAccount(string $token): bool
+    {
+        return User::where('email_verified_token', $token)->update(['is_first_login' => 0,'email_verified_at' => now(),'email_verified_token' => null]);
+    }
 }

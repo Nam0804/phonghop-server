@@ -21,6 +21,9 @@ return new class extends Migration
             $table->foreignId('company_id')->constrained();
             $table->rememberToken();
             $table->integer('is_first_login');
+            // 1 for first login, 0 for not first login
+            $table->string('email_verified_token')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('phone');
             $table->timestamps();
         });

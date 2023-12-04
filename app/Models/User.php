@@ -25,6 +25,8 @@ class User extends Authenticatable
         'is_first_login',
         'phone',
         'company_id',
+        'email_verified_token',
+        'email_verified_at',
     ];
 
     /**
