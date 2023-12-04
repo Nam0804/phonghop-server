@@ -25,7 +25,7 @@ Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword
 Route::post('/auth/reset-password', [AuthController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 Route::resource('companies', CompanyController::class);
 Route::resource('users', UserApiController::class);
-Route::resource('admins', AdminController::class);
+Route::get('/users/company/{company_id}', [UserApiController::class, 'CompanyUsers']);Route::resource('admins', AdminController::class);
 Route::get('/auth/verify-email/{token}', [UserApiController::class, 'verifyEmail'])->name('verify.email');
 // Authenticated Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
