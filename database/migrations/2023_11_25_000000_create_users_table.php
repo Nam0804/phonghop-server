@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->integer('type');
 //            2 types: 1 for manager, 2 for employee
+            $table->string('title');
             $table->string('password');
             $table->foreignId('company_id')->constrained();
             $table->rememberToken();
