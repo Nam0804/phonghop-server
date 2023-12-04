@@ -31,6 +31,10 @@ class UserRepository implements BaseUserRepository
     {
         return User::findOrFail($id);
     }
+    public function  CompanyUsers(string $company_id): LengthAwarePaginator
+    {
+        return User::where('company_id',$company_id)->where('role','!=',1)->paginate(10);
+    }
 
     public function confirmAccount(string $token): bool
     {

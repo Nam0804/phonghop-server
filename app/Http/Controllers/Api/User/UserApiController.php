@@ -91,6 +91,14 @@ class UserApiController extends Controller
             'message' => 'User deleted successfully',
         ], 200);
     }
+    public function CompanyUsers(string $company_id)
+    {
+        $users = $this->user->CompanyUsers($company_id);
+        return $this->success([
+            'data' => UserResource::collection($users),
+            'message' => null,
+        ], 200);
+    }
     public function confirmAccount($id)
     {
         $user = $this->user->confirmAccount($id);
