@@ -39,7 +39,7 @@ class UserApiController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'type' => $request->type,
             'phone' => $request->phone,
             'company_id' => $request->company_id,
             'is_first_login' => 0

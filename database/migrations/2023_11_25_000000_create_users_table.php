@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('email')->unique();
-            $table->integer('role');
-//            2 roles: 1 for manager, 2 for employee
+            $table->integer('type');
+//            2 types: 1 for manager, 2 for employee
             $table->string('password');
             $table->foreignId('company_id')->constrained();
             $table->rememberToken();
