@@ -54,6 +54,25 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
             Route::get('/forgot-password-admin', 'LoginController@show')->name('forgot-password.show');
         }
     });
+
+    //Authorization Routes
+    Route::group(['middleware' => ['role:admin']], function () {
+        Route::get('show-roles', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'index']);
+    });
+
+    Route::group(['middleware' => ['role:manager']], function () {
+        Route::get('show-roles', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'index']);
+    });
+
+    Route::group(['middleware' => ['role:user']], function () {
+        Route::get('show-roles', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'index']);
+    });
+
+    Route::group(['middleware' => ['role:guest']], function () {
+        Route::get('show-roles', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'index']);
+    });
+
+    //Queue mail jobs routes
     Route::get('reset-password/{token}',[AuthController::class,'resetPassword'])->name('reset-password');
     Route::get('send-mail', [MailController::class, 'sendMail']);
 });
