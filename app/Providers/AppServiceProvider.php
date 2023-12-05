@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Repository\UserRepository\BaseUserRepository;
-use App\Repository\UserRepository\UserRepository;
+use App\Repository\interface\BaseUserRepository;
+use App\Repository\UserRepository;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
