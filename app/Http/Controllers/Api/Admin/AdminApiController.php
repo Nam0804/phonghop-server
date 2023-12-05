@@ -42,6 +42,7 @@ class AdminApiController extends Controller
         $admin = $this->admin->create([
         'adm_name' => $request->adm_name,
         'adm_email' => $request->adm_email,
+        'adm_phone' => $request->adm_phone,
         'adm_password'=> Hash::make($request->adm_password),
         'adm_role'=>$request->adm_role,]);
         return $this->success([
