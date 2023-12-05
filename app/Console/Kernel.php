@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('sanctum:prune-expired --hours=24')->daily();
         $schedule->command('auth:clear-resets')->everyFifteenMinutes();
-        $schedule->command('queue:work --sleep=3 --tries=3')->everyMinute();
+        $schedule->command('queue:work --sleep=3 --tries=3')->everyFiveMinutes();
     }
 
     /**
