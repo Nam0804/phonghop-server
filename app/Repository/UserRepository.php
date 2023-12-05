@@ -1,7 +1,8 @@
 <?php
-namespace App\Repository\UserRepository;
+namespace App\Repository;
 
 use App\Models\User;
+use App\Repository\interface\BaseUserRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserRepository implements BaseUserRepository
@@ -33,7 +34,7 @@ class UserRepository implements BaseUserRepository
     }
     public function  CompanyUsers(string $company_id): LengthAwarePaginator
     {
-        return User::where('company_id',$company_id)->where('role','!=',1)->paginate(10);
+        return User::where('company_id',$company_id)->where('type','!=',1)->paginate(10);
     }
 
     public function confirmAccount(string $token): bool

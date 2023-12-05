@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Repository\AdminRepository\AdminRepository;
-use App\Repository\AdminRepository\BaseAdminRepository;
-use App\Repository\UserRepository\BaseUserRepository;
-use App\Repository\UserRepository\UserRepository;
+use App\Repository\interface\BaseUserRepository;
+use App\Repository\UserRepository;
+use App\Repository\interface\BaseAdminRepository;
+use App\Repository\AdminRepository;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
