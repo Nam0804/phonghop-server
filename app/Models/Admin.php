@@ -19,9 +19,6 @@ class Admin extends Authenticatable
         'adm_password',
         'adm_role',
     ];
-    public function company()
-    {
-        return $this->belongsTo(Company::class);
-    }
+
 
 }

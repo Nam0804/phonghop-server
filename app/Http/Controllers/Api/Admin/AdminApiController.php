@@ -16,7 +16,7 @@ class AdminApiController extends Controller
     use HttpResponses;
 
     protected $admin;
-    public function __construct(BaseAdminRepository $admin)
+    public function __construct( BaseAdminRepository $admin)
     {
         $this->admin = $admin;
     }
@@ -26,7 +26,11 @@ class AdminApiController extends Controller
     public function index()
     {
         $admins = $this->admin->list();
-        return $admins;
+
+        return $this->success([
+            'data' => AdminResource::collection($admins),
+            'message' => 'Show Admins successfully',
+        ], 200);
     }
 
     /**
@@ -36,13 +40,10 @@ class AdminApiController extends Controller
     {
         $request->validated($request->all());
         $admin = $this->admin->create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password'=> Hash::make($request->password),
-        'role'=>$request->role,
-        'phone'=>$request->phone,
-        'company_id'=>$request->company_id,
-        'is_first_login'=> 0]);
+        'adm_name' => $request->adm_name,
+        'adm_email' => $request->adm_email,
+        'adm_password'=> Hash::make($request->adm_password),
+        'adm_role'=>$request->adm_role,]);
         return $this->success([
             'data' => new AdminResource($admin),
             'message' => 'Admin created successfully',
@@ -57,7 +58,7 @@ class AdminApiController extends Controller
         $admin = $this ->admin->show($id);
         return $this->success([
             'data' => new AdminResource($admin),
-            'message' => null,
+            'message' => 'Show Admin successfully',
         ], 201);
     }
 
@@ -84,12 +85,5 @@ class AdminApiController extends Controller
             'message' => 'Admin deleted successfully',
         ], 200);
     }
-    public function CompanyAdmins(string $company_id)
-    {
-        $admins = $this->admin->CompanyAdmins($company_id);
-        return $this->success([
-            'data' => AdminResource::collection($admins),
-            'message' => null,
-        ], 200);
-    }
+
 }
