@@ -22,6 +22,7 @@ class UserResource extends JsonResource
                 'type' => $this->type,
                 'title' => $this->title,
                 'phone' => $this->phone,
+                'is_first_login' => $this->is_first_login,
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
             ],

@@ -28,6 +28,7 @@ class StoreUserRequest extends FormRequest
             'email'=>['required', 'string', 'email', 'max:255', 'unique:users'],
             'password'=>['required', 'string', 'min:8', 'confirmed',Rules\Password::defaults()],
             'company_id'=>['required', 'integer'],
+            'title'=>['required', 'string', 'max:255'],
             'phone'=>['required', 'numeric'],
             'type'=>['required','integer'],
         ];
