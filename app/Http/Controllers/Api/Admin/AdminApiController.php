@@ -16,7 +16,7 @@ class AdminApiController extends Controller
     use HttpResponses;
 
     protected $admin;
-    public function __construct( BaseAdminRepository $admin)
+    public function __construct(BaseAdminRepository $admin)
     {
         $this->admin = $admin;
     }
@@ -40,11 +40,12 @@ class AdminApiController extends Controller
     {
         $request->validated($request->all());
         $admin = $this->admin->create([
-        'adm_name' => $request->adm_name,
-        'adm_email' => $request->adm_email,
-        'adm_phone' => $request->adm_phone,
-        'adm_password'=> Hash::make($request->adm_password),
-        'adm_role'=>$request->adm_role,]);
+            'adm_name' => $request->adm_name,
+            'adm_email' => $request->adm_email,
+            'adm_phone' => $request->adm_phone,
+            'adm_password' => Hash::make($request->adm_password),
+            'adm_role' => $request->adm_role,
+        ]);
         return $this->success([
             'data' => new AdminResource($admin),
             'message' => 'Admin created successfully',
@@ -56,7 +57,7 @@ class AdminApiController extends Controller
      */
     public function show(string $id)
     {
-        $admin = $this ->admin->show($id);
+        $admin = $this->admin->show($id);
         return $this->success([
             'data' => new AdminResource($admin),
             'message' => 'Show Admin successfully',
@@ -68,11 +69,16 @@ class AdminApiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $admin = $this->admin->update($request->all(),$id);
-        return $this->success([
-            'data' => new AdminResource($admin),
-            'message' => 'Admin updated successfully',
-        ], 200);
+        $update = $this->admin->update($request->all(), $id);
+        if ($update) {
+            $admin = $this->admin->show($id);
+            return $this->success([
+                'data' => new AdminResource($admin),
+                'message' => 'Admin updated successfully',
+            ], 200);
+        } else {
+            return $this->error('','Admin not updated',400);
+        }
     }
 
     /**
@@ -86,5 +92,4 @@ class AdminApiController extends Controller
             'message' => 'Admin deleted successfully',
         ], 200);
     }
-
 }
