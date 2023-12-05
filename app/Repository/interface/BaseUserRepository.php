@@ -1,5 +1,5 @@
 <?php
-namespace App\Repository\UserRepository;
+namespace App\Repository\interface;
 
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
