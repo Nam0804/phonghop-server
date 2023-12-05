@@ -20,14 +20,16 @@ class StoreAdminRequest extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     *
      */
     public function rules(): array
     {
         return [
             'adm_name'=>['required', 'string', 'max:255'],
-            'adm_email'=>['required', 'string', 'email', 'max:255', 'unique:users'],
+            'adm_email'=>['required', 'string', 'email', 'max:255', 'unique:admins'],
+            'adm_phone'=>['required', 'string', 'max:255'],
             'adm_password'=>['required', 'string', 'min:8', 'confirmed',Rules\Password::defaults()],
-            'role'=>['required','integer'],
+            'adm_role'=>['required','integer'],
         ];
     }
 }

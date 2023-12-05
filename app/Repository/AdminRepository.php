@@ -1,7 +1,8 @@
 <?php
-namespace App\Repository\AdminRepository;
+namespace App\Repository;
 
 use App\Models\Admin;
+use App\Repository\interface\BaseAdminRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdminRepository implements BaseAdminRepository
