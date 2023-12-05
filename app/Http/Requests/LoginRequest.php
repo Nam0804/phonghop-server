@@ -65,7 +65,7 @@ class LoginRequest extends FormRequest
     {
         $factory = $this->container->make(ValidationFactory::class);
 
-        return ! $factory->make(
+        return !$factory->make(
             ['username' => $param],
             ['username' => 'email']
         )->fails();

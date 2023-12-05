@@ -22,9 +22,14 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'role',
+        'type',
+        'title',
         'password',
-        'is_first_login'
+        'is_first_login',
+        'phone',
+        'company_id',
+        'email_verified_token',
+        'email_verified_at',
     ];
 
     /**
@@ -46,12 +51,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    /**
-     * Always encrypt the password when it is updated.
-     *
-     * @param $value
-     * @return string
-     */
+//    check if user is manager
+    public function isManager():bool
+    {
+        if (!$this->type == 1) {
+            return false;
+        }
+        return true;
+    }
+//    relationship with 1 company
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
 
 }

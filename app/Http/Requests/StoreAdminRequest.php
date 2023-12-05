@@ -3,8 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Validation\Rules;
 
-class LoginUserRequest extends FormRequest
+class StoreAdminRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +24,10 @@ class LoginUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string', 'min:8'],
+            'adm_name'=>['required', 'string', 'max:255'],
+            'adm_email'=>['required', 'string', 'email', 'max:255', 'unique:users'],
+            'adm_password'=>['required', 'string', 'min:8', 'confirmed',Rules\Password::defaults()],
+            'role'=>['required','integer'],
         ];
     }
 }
