@@ -17,6 +17,9 @@ class RolesRepository implements RolesRepositoryInterface
         return Role::create(['name' => $role]);
     }
 
+    public function showRole($user){
+        return Role::findOrFail($user->id);
+    }
     public function updateRole($user, $role)
     {
         $user->syncRoles([$role]);

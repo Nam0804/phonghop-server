@@ -18,9 +18,4 @@ class PermissionsRepository implements PermissionsRepositoryInterface
         $role = Role::findByName($role);
         return $role->permissions;
     }
-
-    public function updatePermission($role): void
-    {
-        $role->syncPermissions('new-permission');
-    }
 }

@@ -36,6 +36,17 @@ class RolesAndPermissionsController
             ], $statusCode);
     }
 
+    public function showRole($request){
+        try{
+            $roleByUser = $this->rolesRepository->showRole($request->user);
+            $statusCode = 200;
+        } catch (\Exception $e) {
+            $roleByUser = null;
+            $statusCode = 500;
+        }
+        $roleByUser = $this->rolesRepository->showRole($request->user);
+        return response()->json(['roleByUser' => $roleByUser], $statusCode);
+    }
     public function showPermissions($request): \Illuminate\Http\JsonResponse
     {
         try{
