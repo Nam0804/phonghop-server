@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\User;
 use App\Repositories\Interfaces\PermissionsRepositoryInterface;
 use App\Repositories\Interfaces\RolesRepositoryInterface;
 use App\Repositories\PermissionsRepository;
@@ -36,7 +37,14 @@ class RolesAndPermissionsController
             ], $statusCode);
     }
 
-    public function showRole($request){
+    public function assignRole($request): void
+    {
+        $user = User::find(1);
+        $this->rolesRepository->assignRole($user, 'admin');
+    }
+
+    public function showRole($request): \Illuminate\Http\JsonResponse
+    {
         try{
             $roleByUser = $this->rolesRepository->showRole($request->user);
             $statusCode = 200;
