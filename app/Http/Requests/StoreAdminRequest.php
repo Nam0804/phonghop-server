@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\Rules;
 
-class StoreUserRequest extends FormRequest
+class StoreAdminRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,16 +20,16 @@ class StoreUserRequest extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     *
      */
     public function rules(): array
     {
         return [
-            'name'=>['required', 'string', 'max:255'],
-            'email'=>['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password'=>['required', 'string', 'min:8', 'confirmed',Rules\Password::defaults()],
-            'company_id'=>['required', 'integer'],
-            'phone'=>['required', 'numeric'],
-            'type'=>['required','integer'],
+            'adm_name'=>['required', 'string', 'max:255'],
+            'adm_email'=>['required', 'string', 'email', 'max:255', 'unique:admins'],
+            'adm_phone'=>['required', 'string', 'max:255'],
+            'adm_password'=>['required', 'string', 'min:8', 'confirmed',Rules\Password::defaults()],
+            'adm_role'=>['required','integer'],
         ];
     }
 }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('adm_name', 100);
             $table->string('adm_email', 100);
             $table->string('adm_password', 100);
+            $table->string('adm_phone', 50);
             $table->integer('adm_role');
             $table->timestamps();
         });
