@@ -14,9 +14,11 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     public function run(): void
     {
-        Permission::create(['name' => 'create-roles']);
-        Permission::create(['name' => 'update-roles']);
-        Permission::create(['name'=> 'show-roles']);
+        Permission::create(['name' => 'show-company']);
+        Permission::create(['name' => 'update-company']);
+        Permission::create(['name'=> 'add-company']);
+        Permission::create(['name'=> 'delete-company']);
+        Permission::create(['name'=> 'show-all-company']);
 
         $adminRole = Role::create(['name' => 'admin']);
         $managerRole = Role::create(['name' => 'manager']);
@@ -24,20 +26,24 @@ class RolesAndPermissionsSeeder extends Seeder
         $guestRole = Role::create(['name' => 'guest']);
 
         $adminRole->givePermissionTo([
-            'create-roles',
-            'update-roles',
-            'show-roles',
+            'show-company',
+            'update-company',
+            'add-company',
+            'delete-company',
+            'show-all-company'
         ]);
 
         $userRole->givePermissionTo([
-            'show-roles',
+            'show-all-company',
+            'show-company'
         ]);
         $managerRole->givePermissionTo([
-            'update-roles',
-            'show-roles',
+            'show-all-company',
+            'show-company',
+            'update-company'
         ]);
         $guestRole->givePermissionTo([
-            'show-roles'
+            'show-all-company'
         ]);
     }
 }

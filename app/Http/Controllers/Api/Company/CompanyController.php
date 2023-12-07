@@ -28,9 +28,12 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        return CompanyResource::collection(
-            Company::all()
-        );
+        if (auth()->user()->hasPermissionTo('show-all-company')){
+            $companyList =  CompanyResource::collection(
+                Company::all()
+            );
+        }
+        return $companyList;
     }
 
     /**

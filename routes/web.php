@@ -52,35 +52,42 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
         if ( Gate::allows('admin')) {
             Route::get('/forgot-password-admin', 'LoginController@show')->name('forgot-password.show');
         }
+//        Route::resource('roles', \App\Http\Controllers\Api\RolesAndPermissionsController::class);
+//        Route::resource('users', \App\Http\Controllers\UserController::class);
+//        Route::resource('company', \App\Http\Controllers\Api\Company\CompanyController::class);
     });
 
     //Authorization Routes
-    Route::group(['middleware' => ['role:admin']], function () {
-        Route::get('index', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'index']);
-        Route::get('show-roles', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'showRole']);
-        Route::get('show-permissions', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'showPermissions']);
-        Route::post('create-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'createNewRole']);
-        Route::post('edit-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'editRole']);
-    });
-
-    Route::group(['middleware' => ['role:manager']], function () {
-        Route::get('index', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'index']);
-        Route::get('show-roles', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'showRole']);
-        Route::get('show-permissions', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'showPermissions']);
-        Route::post('edit-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'editRole']);
-    });
-
-    Route::group(['middleware' => ['role:user']], function () {
-        Route::get('index', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'index']);
-        Route::get('show-roles', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'showRole']);
-        Route::get('show-permissions', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'showPermissions']);
-    });
-
-    Route::group(['middleware' => ['role:guest']], function () {
-        Route::get('index', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'index']);
-    });
+//    Route::group(['middleware' => ['role:admin']], function () {
+//        Route::get('index', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'index']);
+//        Route::get('show-roles', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'showRole']);
+//        Route::get('show-permissions', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'showPermissions']);
+//        Route::post('create-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'createNewRole']);
+//        Route::post('edit-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'editRole']);
+//    });
+//
+//    Route::group(['middleware' => ['role:manager']], function () {
+//        Route::get('index', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'index']);
+//        Route::get('show-roles', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'showRole']);
+//        Route::get('show-permissions', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'showPermissions']);
+//        Route::post('edit-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'editRole']);
+//    });
+//
+//    Route::group(['middleware' => ['role:user']], function () {
+//        Route::get('index', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'index']);
+//        Route::get('show-roles', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'showRole']);
+//        Route::get('show-permissions', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'showPermissions']);
+//    });
+//
+//    Route::group(['middleware' => ['role:guest']], function () {
+//        Route::get('index', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'index']);
+//        Route::get('/register', 'RegisterController@show')->name('register.show');
+//        Route::post('/register', 'RegisterController@register')->name('register.perform');
+//    });
     //Queue mail jobs routes
     Route::get('reset-password/{token}',[AuthController::class,'resetPassword'])->name('reset-password');
     Route::get('send-mail', [MailController::class, 'sendMail']);
+
+//    Route::get('set-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'assignRole']);
 });
 

@@ -6,14 +6,15 @@ use App\Models\User;
 use App\Repositories\Interfaces\PermissionsRepositoryInterface;
 use App\Repositories\Interfaces\RolesRepositoryInterface;
 use App\Repositories\PermissionsRepository;
+use App\Repositories\RolesRepository;
 
 class RolesAndPermissionsController
 {
-    private PermissionsRepositoryInterface $permissionsRepository;
-    private RolesRepositoryInterface $rolesRepository;
+    private PermissionsRepository $permissionsRepository;
+    private RolesRepository $rolesRepository;
 
-    function __construct(PermissionsRepositoryInterface $permissionsRepository,
-                         RolesRepositoryInterface       $rolesRepository)
+    function __construct(PermissionsRepository $permissionsRepository,
+                         RolesRepository       $rolesRepository)
     {
         $this->permissionsRepository = $permissionsRepository;
         $this->rolesRepository = $rolesRepository;
@@ -37,10 +38,25 @@ class RolesAndPermissionsController
             ], $statusCode);
     }
 
-    public function assignRole($request): void
+    public function assignRole(): \Illuminate\Http\JsonResponse
     {
-        $user = User::find(1);
-        $this->rolesRepository->assignRole($user, 'admin');
+        try{
+            $this->rolesRepository->assignRole('demo-staff-role', 'user');
+            $this->rolesRepository->assignRole('demo-admin-role', 'admin');
+            $this->rolesRepository->assignRole('demo-manager-role', 'manager');
+//            $user = User::where('name','demo-admin-role')->first();
+//            $role = $user->getRoleNames();
+            $message = 'Role assigned successfully';
+            $statusCode = 200;
+        }catch (\Exception $e) {
+            $role = null;
+            $statusCode = 500;
+            $message = 'Role assigned failed';
+        }
+        return response()->json([
+//            'role' => $role,
+            'message' => $message,
+        ], $statusCode);
     }
 
     public function showRole($request): \Illuminate\Http\JsonResponse
