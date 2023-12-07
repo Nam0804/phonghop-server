@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Company\StoreCompanyRequest;
 use App\Http\Resources\CompanyResource;
 use App\Models\Company;
+use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,27 +14,29 @@ use Illuminate\Support\Facades\Auth;
 class CompanyController extends Controller
 {
     use HttpResponses;
+
+    public function __construct()
+    {
+        $this->middleware(['auth:api', 'role:admin']);
+    }
     /**
      * Check if the user is authorized to access this company
      */
     private function isNotAuthorized(Company $company)
     {
         if (!Auth::user()->isManager() && Auth::user()->company_id !== $company->id) {
-            return $this->error('','You are not authorized to access this company', 403);
+            return $this->error('', 'You are not authorized to access this company', 403);
         }
 
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        if (auth()->user()->hasPermissionTo('show-all-company')){
-            $companyList =  CompanyResource::collection(
-                Company::all()
-            );
-        }
-        return $companyList;
+        return CompanyResource::collection(
+            Company::all());
     }
 
     /**
@@ -85,6 +88,6 @@ class CompanyController extends Controller
 //        }
 
         $company->delete();
-        return $this->success(null,'Company deleted successfully',200);
+        return $this->success(null, 'Company deleted successfully', 200);
     }
 }
