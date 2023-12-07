@@ -15,10 +15,10 @@ class CompanyController extends Controller
 {
     use HttpResponses;
 
-    public function __construct()
-    {
-        $this->middleware(['auth:api', 'role:admin']);
-    }
+//    public function __construct()
+//    {
+//        $this->middleware(['auth:api', 'role:admin']);
+//    }
     /**
      * Check if the user is authorized to access this company
      */
@@ -35,11 +35,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->hasRole('admin')) {
-            $company =  CompanyResource::collection(
-                Company::all());
-        }
-        return response()->json(['user',auth()->user()]);
+        return CompanyResource::collection(
+            Company::all());
     }
 
     /**
@@ -67,11 +64,9 @@ class CompanyController extends Controller
     public function show(Company $company)
     {
         // return $this->isNotAuthorized($company) ? $this->isNotAuthorized($company) : new CompanyResource($company);
-        if (auth()->user()->hasRoles('admin')) {
-            return new CompanyResource(
-                Company::findOrFail($company->id)
-            );
-        }return response()->json(['user',auth()->user()]);
+        return new CompanyResource(
+            Company::findOrFail($company->id)
+        );
     }
 
     /**
