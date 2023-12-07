@@ -35,8 +35,9 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        return CompanyResource::collection(
-            Company::all());
+            $company =  CompanyResource::collection(
+                Company::all());
+        return response()->json(['company', $company]);
     }
 
     /**
@@ -64,9 +65,11 @@ class CompanyController extends Controller
     public function show(Company $company)
     {
         // return $this->isNotAuthorized($company) ? $this->isNotAuthorized($company) : new CompanyResource($company);
-        return new CompanyResource(
-            Company::findOrFail($company->id)
-        );
+        if (auth()->user()->hasRoles('admin')) {
+            return new CompanyResource(
+                Company::findOrFail($company->id)
+            );
+        }return response()->json(['user',auth()->user()]);
     }
 
     /**

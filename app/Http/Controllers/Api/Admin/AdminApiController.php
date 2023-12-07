@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 
-class AdminApiController extends Controller
+class  AdminApiController extends Controller
 {
     use HttpResponses;
 

@@ -20,7 +20,7 @@ class RolesAndPermissionsController
         $this->rolesRepository = $rolesRepository;
     }
 
-    public function index($request): \Illuminate\Http\JsonResponse
+    public function index(): \Illuminate\Http\JsonResponse
     {
         try{
             $permissions = $this->permissionsRepository->index();

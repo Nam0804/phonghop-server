@@ -26,39 +26,27 @@ Route::post('/auth/reset-password', [AuthController::class, 'submitResetPassword
 Route::resource('companies', CompanyController::class);
 Route::resource('users', UserApiController::class);
 Route::get('/users/company/{company_id}', [UserApiController::class, 'CompanyUsers']);
-Route::resource('admins', AdminApiController::class);
 Route::get('/auth/verify-email/{token}', [UserApiController::class, 'verifyEmail'])->name('verify.email');
 // Authenticated Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::resource('admins', AdminApiController::class);
+    Route::resource('users', UserApiController::class);
+    Route::resource('roles', \App\Http\Controllers\Api\RolesAndPermissionsController::class);
+
     Route::post('/auth/logout', [AuthController::class, 'logout']);
-});
-Route::group(['middleware' => ['auth:api']], function () {
-    Route::group(['middleware' => ['role:admin']], function () {
+
+    Route::middleware(['role:admin'])->group(function () {
         Route::get('index', [\App\Http\Controllers\Api\Company\CompanyController::class, 'index']);
-        Route::get('show-company', [\App\Http\Controllers\Api\Company\CompanyController::class, 'show']);
+        Route::get('/companies/show-company', [\App\Http\Controllers\Api\Company\CompanyController::class, 'show']);
         Route::post('update-company', [\App\Http\Controllers\Api\Company\CompanyController::class, 'update']);
         Route::post('add-company', [\App\Http\Controllers\Api\Company\CompanyController::class, 'store']);
         Route::delete('delete-company', [\App\Http\Controllers\Api\Company\CompanyController::class, 'destroy']);
     });
 
-//    Route::group(['middleware' => ['role:manager']], function () {
-//        Route::resource('roles', \App\Http\Controllers\Api\RolesAndPermissionsController::class);
-//        Route::get('index', [\App\Http\Controllers\Api\Company\CompanyController::class, 'index']);
-//        Route::get('show-company', [\App\Http\Controllers\Api\Company\CompanyController::class, 'show']);
-//        Route::post('update-company', [\App\Http\Controllers\Api\Company\CompanyController::class, 'update']);
-//    });
-//
-//    Route::group(['middleware' => ['role:user']], function () {
-//        Route::get('index', [\App\Http\Controllers\Api\Company\CompanyController::class, 'index']);
-//        Route::get('show-company', [\App\Http\Controllers\Api\Company\CompanyController::class, 'show']);
-//    });
-//
-//    Route::group(['middleware' => ['role:guest']], function () {
-//        Route::get('index-for-guest', [\App\Http\Controllers\Api\Company\CompanyController::class, 'index']);
-//    });
-    Route::resource('roles', \App\Http\Controllers\Api\RolesAndPermissionsController::class);
-    Route::resource('users', \App\Http\Controllers\UserController::class);
+
 });
 
-Route::get('/set-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'assignRole']);
 
+
+
+Route::get('/set-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'assignRole']);

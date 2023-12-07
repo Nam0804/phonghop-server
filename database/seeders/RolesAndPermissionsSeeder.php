@@ -20,7 +20,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name'=> 'delete-company']);
         Permission::create(['name'=> 'show-all-company']);
 
-        $adminRole = Role::create(['name' => 'admin']);
+        $adminRole = Role::create(['name' => 'manager']);
         $managerRole = Role::create(['name' => 'manager']);
         $userRole = Role::create(['name' => 'user']);
         $guestRole = Role::create(['name' => 'guest']);
