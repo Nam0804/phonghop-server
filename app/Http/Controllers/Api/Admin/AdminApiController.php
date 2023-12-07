@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Resources\AdminResource;
-use App\Repository\AdminRepository\BaseAdminRepository;
+use App\Repository\interface\BaseAdminRepository;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -26,7 +26,11 @@ class AdminApiController extends Controller
     public function index()
     {
         $admins = $this->admin->list();
-        return $admins;
+
+        return $this->success([
+            'data' => AdminResource::collection($admins),
+            'message' => 'Show Admins successfully',
+        ], 200);
     }
 
     /**
@@ -36,13 +40,12 @@ class AdminApiController extends Controller
     {
         $request->validated($request->all());
         $admin = $this->admin->create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password'=> Hash::make($request->password),
-        'role'=>$request->role,
-        'phone'=>$request->phone,
-        'company_id'=>$request->company_id,
-        'is_first_login'=> 0]);
+            'adm_name' => $request->adm_name,
+            'adm_email' => $request->adm_email,
+            'adm_phone' => $request->adm_phone,
+            'adm_password' => Hash::make($request->adm_password),
+            'adm_role' => $request->adm_role,
+        ]);
         return $this->success([
             'data' => new AdminResource($admin),
             'message' => 'Admin created successfully',
@@ -54,10 +57,10 @@ class AdminApiController extends Controller
      */
     public function show(string $id)
     {
-        $admin = $this ->admin->show($id);
+        $admin = $this->admin->show($id);
         return $this->success([
             'data' => new AdminResource($admin),
-            'message' => null,
+            'message' => 'Show Admin successfully',
         ], 201);
     }
 
@@ -66,11 +69,16 @@ class AdminApiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $admin = $this->admin->update($request->all(),$id);
-        return $this->success([
-            'data' => new AdminResource($admin),
-            'message' => 'Admin updated successfully',
-        ], 200);
+        $update = $this->admin->update($request->all(), $id);
+        if ($update) {
+            $admin = $this->admin->show($id);
+            return $this->success([
+                'data' => new AdminResource($admin),
+                'message' => 'Admin updated successfully',
+            ], 200);
+        } else {
+            return $this->error('','Admin not updated',400);
+        }
     }
 
     /**
@@ -82,14 +90,6 @@ class AdminApiController extends Controller
         return $this->success([
             'data' => null,
             'message' => 'Admin deleted successfully',
-        ], 200);
-    }
-    public function CompanyAdmins(string $company_id)
-    {
-        $admins = $this->admin->CompanyAdmins($company_id);
-        return $this->success([
-            'data' => AdminResource::collection($admins),
-            'message' => null,
         ], 200);
     }
 }
