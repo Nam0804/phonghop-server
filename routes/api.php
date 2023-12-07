@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Admin\AdminApiController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Company\CompanyController;
+use App\Http\Controllers\Api\MeetingRoom\MeetingRoomcontroller;
 use App\Http\Controllers\Api\User\UserApiController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,7 @@ Route::resource('companies', CompanyController::class);
 Route::resource('users', UserApiController::class);
 Route::get('/users/company/{company_id}', [UserApiController::class, 'CompanyUsers']);
 Route::resource('admins', AdminApiController::class);
+Route::resource('meeting-room', MeetingRoomcontroller::class);
 Route::get('/auth/verify-email/{token}', [UserApiController::class, 'verifyEmail'])->name('verify.email');
 // Authenticated Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
