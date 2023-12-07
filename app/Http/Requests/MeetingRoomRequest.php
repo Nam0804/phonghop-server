@@ -22,14 +22,14 @@ class MeetingRoomRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'require|string|max:255',
-            'location' => 'require|string|max:255',
-            'floor' => 'string|max:100',
-            'capacity' => 'require|numeric|max:100',
-            'equipment' => 'string|max:255',
-            'image' => 'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-            'availability' => 'required',
-            'company_id' => 'required|integer',
+            'name' => ['required', 'string', 'max:255'],
+            'location' => ['required', 'string', 'max:255'],
+            'floor' => ['string', 'max:100'],
+            'capacity' => ['required', 'numeric', 'max:100'],
+            'equipment' => ['string', 'max:255'],
+            'image' => ['image', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
+            'availability' => ['required'],
+            'company_id' => ['required', 'integer'],
         ];
     }
 }

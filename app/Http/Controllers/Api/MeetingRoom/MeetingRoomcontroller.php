@@ -8,6 +8,7 @@ use App\Http\Resources\MeetingRoomResource;
 use App\Repository\interface\BaseMeetingRoomRepository;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MeetingRoomcontroller extends Controller
 {
@@ -22,7 +23,8 @@ class MeetingRoomcontroller extends Controller
      */
     public function index()
     {
-        $meetingRooms = $this->meetingRoom->list();
+        $company_id = Auth::user()->company_id;
+        $meetingRooms = $this->meetingRoom->list($company_id);
         return $meetingRooms;
     }
 
@@ -31,18 +33,34 @@ class MeetingRoomcontroller extends Controller
      */
     public function store(MeetingRoomRequest $request)
     {
+        // dd($request->all());
         $request->validated($request->all());
-        $image_path = $request->file('image')->store('image', 'public');
-        $meetingRoom = $this->meetingRoom->create([
-            'name' => $request->name,
-            'location' => $request->location,
-            'floor' => $request->floor,
-            'capacity' => $request->capacity,
-            'equipment' => $request->equipment,
-            'image' => $image_path,
-            'availability' => $request->availability,
-            'company_id' => $request->company_id,
-        ]);
+        if ($request->hasFile('image')) {
+            $image_path = $request->file('image')->store('image', 'public');
+            $meetingRoom = $this->meetingRoom->create([
+                'name' => $request->name,
+                'location' => $request->location,
+                'floor' => $request->floor,
+                'capacity' => $request->capacity,
+                'equipment' => $request->equipment,
+                'image' => $image_path,
+                'availability' => $request->availability,
+                'company_id' => $request->company_id,
+            ]);
+        }
+        else{
+            $meetingRoom = $this->meetingRoom->create([
+                'name' => $request->name,
+                'location' => $request->location,
+                'floor' => $request->floor,
+                'capacity' => $request->capacity,
+                'equipment' => $request->equipment,
+                'availability' => $request->availability,
+                'company_id' => $request->company_id,
+            ]);
+        }
+
+
         if ($meetingRoom) {
             return $this->success([
                 'data' => new MeetingRoomResource($meetingRoom),

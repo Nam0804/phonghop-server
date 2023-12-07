@@ -27,10 +27,13 @@ Route::post('/auth/reset-password', [AuthController::class, 'submitResetPassword
 Route::resource('companies', CompanyController::class);
 Route::resource('users', UserApiController::class);
 Route::get('/users/company/{company_id}', [UserApiController::class, 'CompanyUsers']);
-Route::resource('admins', AdminApiController::class);
-Route::resource('meeting-room', MeetingRoomcontroller::class);
 Route::get('/auth/verify-email/{token}', [UserApiController::class, 'verifyEmail'])->name('verify.email');
+Route::resource('admins', AdminApiController::class);
+
 // Authenticated Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::get('/meeting-rooms/listing/{company_id}', [MeetingRoomcontroller::class, 'CompanyMeetingRooms']);
+    Route::resource('meeting-rooms', MeetingRoomcontroller::class);
+
 });

@@ -7,9 +7,9 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class MeetingRoomRepository implements BaseMeetingRoomRepository
 {
-    public function list(): LengthAwarePaginator
+    public function list($company_id): LengthAwarePaginator
     {
-        return MeetingRoom::paginate(10);
+        return MeetingRoom::where('company_id', $company_id)->paginate(10);
     }
 
     public function create(array $data): MeetingRoom
