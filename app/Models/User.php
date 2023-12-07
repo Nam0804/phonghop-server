@@ -20,8 +20,14 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'username',
+        'type',
+        'title',
         'password',
+        'is_first_login',
+        'phone',
+        'company_id',
+        'email_verified_token',
+        'email_verified_at',
     ];
 
     /**
@@ -43,15 +49,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    /**
-     * Always encrypt the password when it is updated.
-     *
-     * @param $value
-     * @return string
-     */
-    public function setPasswordAttribute($value)
+//    check if user is manager
+    public function isManager():bool
     {
-        $this->attributes['password'] = bcrypt($value);
+        if (!$this->type == 1) {
+            return false;
+        }
+        return true;
     }
+//    relationship with 1 company
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
 }

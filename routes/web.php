@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\MailController;
+use App\Http\Controllers\Api\Auth\AuthController;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +22,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
     /**
      * Home Routes
      */
-    Route::get('/', 'HomeController@index')->name('home.index');
+    // Route::get('/', 'HomeController@index')->name('home.index');
 
     Route::group(['middleware' => ['guest']], function() {
         /**
@@ -32,6 +36,11 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
          */
         Route::get('/login', 'LoginController@show')->name('login.show');
         Route::post('/login', 'LoginController@login')->name('login.perform');
+        /**
+         * Forgot Password Routes
+         */
+        // Route::get('/forgot-password', 'LoginController@show')->name('forgot-password.show');
+        // Route::post('/forgot-password', 'LoginController@login')->name('orgot-password.perform');
 
     });
 
@@ -40,5 +49,11 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
          * Logout Routes
          */
         Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
+        if ( Gate::allows('admin')) {
+            Route::get('/forgot-password-admin', 'LoginController@show')->name('forgot-password.show');
+        }
     });
+    Route::get('reset-password/{token}',[AuthController::class,'resetPassword'])->name('reset-password');
+    Route::get('send-mail', [MailController::class, 'sendMail']);
 });
+
