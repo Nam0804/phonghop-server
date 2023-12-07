@@ -35,9 +35,11 @@ class CompanyController extends Controller
      */
     public function index()
     {
+        if (auth()->user()->hasRole('admin')) {
             $company =  CompanyResource::collection(
                 Company::all());
-        return response()->json(['company', $company]);
+        }
+        return response()->json(['user',auth()->user()]);
     }
 
     /**
