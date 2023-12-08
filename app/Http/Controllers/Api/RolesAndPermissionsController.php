@@ -62,7 +62,7 @@ class RolesAndPermissionsController
     public function showRole($request): \Illuminate\Http\JsonResponse
     {
         try{
-            $roleByUser = $this->rolesRepository->showRole($request->user);
+            $roleByUser = $this->rolesRepository->showRole($request->user_id);
             $statusCode = 200;
         } catch (\Exception $e) {
             $roleByUser = null;
@@ -102,7 +102,7 @@ class RolesAndPermissionsController
     public function editRole($request): \Illuminate\Http\JsonResponse
     {
         try {
-            $this->rolesRepository->updateRole($request->user, $request->role);
+            $this->rolesRepository->updateRole($request->user_id, $request->role);
             $role = $request->user->hasRole();
             $message = 'Role updated successfully';
             $statusCode = 200;

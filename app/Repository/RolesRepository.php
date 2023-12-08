@@ -25,13 +25,15 @@ class RolesRepository implements RolesRepositoryInterface
         return Role::create(['name' => $role]);
     }
 
-    public function showRole($user)
+    public function showRole($user_id)
     {
+        $user = User::all()->find($user_id);
         return $user->getRoleNames();
     }
 
-    public function updateRole($user, $role):void
+    public function updateRole($user_id, $role):void
     {
+        $user = User::all()->find($user_id);
         $user->syncRoles([$role]);
     }
 }
