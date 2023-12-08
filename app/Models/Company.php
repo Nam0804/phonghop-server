@@ -33,4 +33,9 @@ class Company extends Model
     public function manager(){
         return $this->hasOne(User::class, 'company_id', 'id')->where('role', 1);
     }
+
+//    relationship with many meeting rooms
+    public function meetingRooms(){
+        return $this->hasMany(MeetingRoom::class, 'company_id', 'id');
+    }
 }
