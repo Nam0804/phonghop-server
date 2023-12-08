@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
+use App\Mail\SendCreateMail;
 use App\Repository\interface\BaseUserRepository;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
@@ -41,14 +42,12 @@ class UserApiController extends Controller
             'password' => Hash::make($request->password),
             'type' => $request->type,
             'phone' => $request->phone,
+            'title' => $request->title,
             'company_id' => $request->company_id,
-            'is_first_login' => 0
+            'is_first_login' => 1,
         ]);
         if ($user) {
-            Mail::send('email.registerMail', ['email' => $request->email, 'password' => $request->password], function ($message) use ($request) {
-                $message->to($request->email);
-                $message->subject('Register Password');
-            });
+            Mail::to($user->email)->send(new SendCreateMail($user->email,$request->password, $user->name));
         }
         return $this->success([
             'data' => new UserResource($user),
@@ -73,11 +72,18 @@ class UserApiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $user = $this->user->update($request->all(), $id);
-        return $this->success([
-            'data' => new UserResource($user),
-            'message' => 'User updated successfully',
-        ], 200);
+        $update = $this->user->update($request->all(), $id);
+        if($update){
+            $user = $this->user->show($id);
+            return $this->success([
+                'data' => new UserResource($user),
+                'message' => 'User updated successfully',
+            ], 200);
+        }
+        else{
+            return $this->error(null,'User not updated',400);
+        }
+
     }
 
     /**
