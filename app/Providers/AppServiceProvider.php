@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repository\BookingRepository;
+use App\Repository\interface\BaseBookingRepository;
 use App\Repository\interface\BaseMeetingRoomRepository;
 use App\Repository\interface\BaseUserRepository;
 use App\Repository\MeetingRoomRepository;
@@ -21,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(BaseUserRepository::class, UserRepository::class);
         $this->app->bind(BaseAdminRepository::class, AdminRepository::class);
         $this->app->bind(BaseMeetingRoomRepository::class, MeetingRoomRepository::class);
-
+        $this->app->bind(BaseBookingRepository::class, BookingRepository::class);
     }
 
     /**
