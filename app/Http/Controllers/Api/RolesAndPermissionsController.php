@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
-use App\Repositories\Interfaces\PermissionsRepositoryInterface;
-use App\Repositories\Interfaces\RolesRepositoryInterface;
-use App\Repositories\PermissionsRepository;
-use App\Repositories\RolesRepository;
+use App\Repository\PermissionsRepository;
+use App\Repository\RolesRepository;
+use Illuminate\Http\Request;
 
 class RolesAndPermissionsController
 {
@@ -44,8 +43,9 @@ class RolesAndPermissionsController
             $this->rolesRepository->assignRole('demo-staff-role', 'user');
             $this->rolesRepository->assignRole('demo-admin-role', 'admin');
             $this->rolesRepository->assignRole('demo-manager-role', 'manager');
-//            $user = User::where('name','demo-admin-role')->first();
-//            $role = $user->getRoleNames();
+            $this->rolesRepository->assignRole('demo-guest-role', 'guest');
+            $user = User::where('name','demo-guest-role')->first();
+            $role = $user->getRoleNames();
             $message = 'Role assigned successfully';
             $statusCode = 200;
         }catch (\Exception $e) {
@@ -54,7 +54,7 @@ class RolesAndPermissionsController
             $message = 'Role assigned failed';
         }
         return response()->json([
-//            'role' => $role,
+            'role' => $role,
             'message' => $message,
         ], $statusCode);
     }
@@ -118,4 +118,19 @@ class RolesAndPermissionsController
         ], $statusCode);
     }
 
+    public function updatePermissions(Request $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $this->permissionsRepository->updatePermissionByRole($request->role, $request->permissions);
+            $message = 'permissions updated successfully';
+            $statusCode = 200;
+        } catch (\Exception $e) {
+            $message = 'Error updating permissions';
+            $statusCode = 500;
+        }
+
+        return response()->json([
+            'message' => $message,
+        ], $statusCode);
+    }
 }

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repository;
 
 use App\Models\User;
-use App\Repositories\Interfaces\RolesRepositoryInterface;
+use App\Repository\interface\RolesRepositoryInterface;
 use Spatie\Permission\Models\Role;
 
 class RolesRepository implements RolesRepositoryInterface

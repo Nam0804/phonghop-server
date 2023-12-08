@@ -31,31 +31,16 @@ Route::get('/auth/verify-email/{token}', [UserApiController::class, 'verifyEmail
 // Authenticated Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('roles', \App\Http\Controllers\Api\RolesAndPermissionsController::class);
+    Route::post('update-permissions', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'updatePermissions']);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 
-    Route::middleware(['role:admin'])->group(function () {
-        Route::resource('admins', AdminApiController::class);
-        Route::get('index', [CompanyController::class, 'index']);
-        Route::get('/companies/show-company', [CompanyController::class, 'show']);
-        Route::post('update-company', [CompanyController::class, 'update']);
-        Route::post('add-company', [CompanyController::class, 'store']);
-        Route::delete('delete-company', [CompanyController::class, 'destroy']);
-    });
+    Route::resource('admins', AdminApiController::class);
+    Route::get('index', [CompanyController::class, 'index']);
+    Route::get('/companies/show-company', [CompanyController::class, 'show']);
+    Route::post('update-company', [CompanyController::class, 'update']);
+    Route::post('add-company', [CompanyController::class, 'store']);
+    Route::delete('delete-company', [CompanyController::class, 'destroy']);
 
-    Route::middleware(['role:manager'])->group(function () {
-        Route::get('index', [CompanyController::class, 'index']);
-        Route::get('/companies/show-company', [CompanyController::class, 'show']);
-        Route::post('update-company', [CompanyController::class, 'update']);
-    });
-
-    Route::middleware(['role:user'])->group(function () {
-        Route::get('index', [CompanyController::class, 'index']);
-        Route::get('/companies/show-company', [CompanyController::class, 'show']);
-    });
-
-    Route::middleware(['role:guest'])->group(function () {
-        Route::get('index', [CompanyController::class, 'index']);
-    });
 });
 
 Route::get('/set-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'assignRole']);
