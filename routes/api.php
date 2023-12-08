@@ -27,14 +27,13 @@ Route::resource('companies', CompanyController::class);
 Route::resource('users', UserApiController::class);
 Route::get('/users/company/{company_id}', [UserApiController::class, 'CompanyUsers']);
 Route::get('/auth/verify-email/{token}', [UserApiController::class, 'verifyEmail'])->name('verify.email');
-
+Route::resource('admins', AdminApiController::class);
 // Authenticated Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('roles', \App\Http\Controllers\Api\RolesAndPermissionsController::class);
     Route::post('update-permissions', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'updatePermissions']);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 
-    Route::resource('admins', AdminApiController::class);
     Route::get('index', [CompanyController::class, 'index']);
     Route::get('/companies/show-company', [CompanyController::class, 'show']);
     Route::post('update-company', [CompanyController::class, 'update']);
