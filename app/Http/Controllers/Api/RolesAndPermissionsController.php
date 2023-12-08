@@ -71,10 +71,10 @@ class RolesAndPermissionsController
         $roleByUser = $this->rolesRepository->showRole($request->user);
         return response()->json(['roleByUser' => $roleByUser], $statusCode);
     }
-    public function showPermissions($request): \Illuminate\Http\JsonResponse
+    public function showPermissions(Request $request): \Illuminate\Http\JsonResponse
     {
         try{
-            $permissionList = $this->permissionsRepository->showPermissionByRole($request->role);
+            $permissionList = $this->permissionsRepository->showPermissionByRole($request->user_id);
             $statusCode = 200;
         } catch (\Exception $e) {
             $permissionList = null;
@@ -83,7 +83,7 @@ class RolesAndPermissionsController
         return response()->json(['permissionsByRole' => $permissionList], $statusCode);
     }
 
-    public function createNewRole($request): \Illuminate\Http\JsonResponse
+    public function createNewRole(Request $request): \Illuminate\Http\JsonResponse
     {
         try {
             $this->rolesRepository->createRole($request->role);
@@ -99,7 +99,7 @@ class RolesAndPermissionsController
         ], $statusCode);
     }
 
-    public function editRole($request): \Illuminate\Http\JsonResponse
+    public function editRole(Request $request): \Illuminate\Http\JsonResponse
     {
         try {
             $this->rolesRepository->updateRole($request->user_id, $request->role);

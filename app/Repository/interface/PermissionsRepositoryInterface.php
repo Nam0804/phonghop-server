@@ -5,5 +5,5 @@ namespace App\Repository\interface;
 interface PermissionsRepositoryInterface
 {
     public function index();
-    public function showPermissionByRole($role);
+    public function showPermissionByRole($user_id);
 }
