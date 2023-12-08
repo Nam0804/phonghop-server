@@ -25,7 +25,7 @@ class RolesRepository implements RolesRepositoryInterface
         return Role::create(['name' => $role]);
     }
 
-    public function showRole($user_id)
+    public function showRole($user_id): \Illuminate\Support\Collection
     {
         $user = User::all()->find($user_id);
         return $user->getRoleNames();
