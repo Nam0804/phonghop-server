@@ -15,10 +15,6 @@ class CompanyController extends Controller
 {
     use HttpResponses;
 
-//    public function __construct()
-//    {
-//        $this->middleware(['auth:api', 'role:admin']);
-//    }
     /**
      * Check if the user is authorized to access this company
      */

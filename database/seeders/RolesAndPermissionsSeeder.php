@@ -20,6 +20,12 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name'=> 'delete-company']);
         Permission::create(['name'=> 'show-all-company']);
 
+        Permission::create(['name' => 'show-meeting-rooms']);
+        Permission::create(['name' => 'update-meeting-rooms']);
+        Permission::create(['name'=> 'add-meeting-rooms']);
+        Permission::create(['name'=> 'delete-meeting-rooms']);
+        Permission::create(['name'=> 'show-all-meeting-rooms']);
+
         $adminRole = Role::create(['name' => 'admin']);
         $managerRole = Role::create(['name' => 'manager']);
         $userRole = Role::create(['name' => 'user']);
