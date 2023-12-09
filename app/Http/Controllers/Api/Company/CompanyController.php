@@ -23,7 +23,6 @@ class CompanyController extends Controller
         if (!Auth::user()->isManager() && Auth::user()->company_id !== $company->id) {
             return $this->error('', 'You are not authorized to access this company', 403);
         }
-
     }
 
     /**
