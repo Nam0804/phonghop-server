@@ -28,10 +28,12 @@ Route::resource('users', UserApiController::class);
 Route::get('/users/company/{company_id}', [UserApiController::class, 'CompanyUsers']);
 Route::get('/auth/verify-email/{token}', [UserApiController::class, 'verifyEmail'])->name('verify.email');
 Route::resource('admins', AdminApiController::class);
+Route::get('set-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'assignRole']);
+Route::post('create-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'createNewRole']);
 // Authenticated Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
-    Route::get('/meeting-rooms/listing/{company_id}', [MeetingRoomcontroller::class, 'CompanyMeetingRooms']);
-    Route::resource('meeting-rooms', MeetingRoomcontroller::class);
-
+    Route::get('/meeting-rooms/listing/{company_id}', [\App\Http\Controllers\Api\MeetingRoom\MeetingRoomcontroller::class, 'CompanyMeetingRooms']);
+    Route::resource('meeting-rooms', \App\Http\Controllers\Api\MeetingRoom\MeetingRoomcontroller::class);
+    Route::resource('roles-and-permissions', \App\Http\Controllers\Api\RolesAndPermissionsController::class);
 });

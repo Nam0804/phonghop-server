@@ -44,17 +44,17 @@ class RolesAndPermissionsController
             $this->rolesRepository->assignRole('demo-admin-role', 'admin');
             $this->rolesRepository->assignRole('demo-manager-role', 'manager');
             $this->rolesRepository->assignRole('demo-guest-role', 'guest');
-            $user = User::where('name','demo-guest-role')->first();
-            $role = $user->getRoleNames();
+//            $user = User::where('name','demo-admin-role')->first();
+//            $role = $user->getRoleNames();
             $message = 'Role assigned successfully';
             $statusCode = 200;
         }catch (\Exception $e) {
-            $role = null;
+//            $role = null;
             $statusCode = 500;
             $message = 'Role assigned failed';
         }
         return response()->json([
-            'role' => $role,
+//            'role' => $role,
             'message' => $message,
         ], $statusCode);
     }

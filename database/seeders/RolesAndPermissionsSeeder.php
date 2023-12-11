@@ -36,20 +36,31 @@ class RolesAndPermissionsSeeder extends Seeder
             'update-company',
             'add-company',
             'delete-company',
-            'show-all-company'
+            'show-all-company',
+            'update-meeting-rooms',
+            'add-meeting-rooms',
+            'delete-meeting-rooms',
+            'show-meeting-rooms',
+            'show-all-meeting-rooms'
         ]);
 
         $userRole->givePermissionTo([
             'show-all-company',
-            'show-company'
+            'show-company',
+            'show-meeting-rooms',
+            'show-all-meeting-rooms'
         ]);
         $managerRole->givePermissionTo([
             'show-all-company',
             'show-company',
-            'update-company'
+            'update-company',
+            'show-meeting-rooms',
+            'show-all-meeting-rooms',
+            'update-meeting-rooms'
         ]);
         $guestRole->givePermissionTo([
-            'show-all-company'
+            'show-all-company',
+            'show-all-meeting-rooms'
         ]);
     }
 }
