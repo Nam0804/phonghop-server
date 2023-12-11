@@ -11,5 +11,5 @@ interface BaseBookingRepository
     public function update(array $data, string $id): bool;
     public function delete(string $id): bool;
     public function show(string $id): Booking;
-    public function addGuest(array $data): bool;
+    public function checkTime(string $from_time,string $to_time,string $meeting_room_id): bool;
 }

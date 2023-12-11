@@ -24,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(BaseAdminRepository::class, AdminRepository::class);
         $this->app->bind(BaseMeetingRoomRepository::class, MeetingRoomRepository::class);
         $this->app->bind(BaseBookingRepository::class, BookingRepository::class);
+        $this->app->bind(BaseGuestRepository::class, GuestRepository::class);
+
     }
 
     /**

@@ -17,7 +17,6 @@ class Booking extends Model
         'to_time',
         'topic',
         'type_of_booking',
-        'guests',
         'agenda',
         'objective',
         'material',
@@ -26,6 +25,7 @@ class Booking extends Model
         'booking_email',
         'booking_title',
         'booking_company',
+        'register_status'
     ];
 
     // relationship 1-many with meeting room

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Booking;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BookingRequest extends FormRequest
@@ -24,11 +25,10 @@ class BookingRequest extends FormRequest
         return [
             // rule for all fillable fields in Booking model
             'meeting_room_id' => ['required', 'integer'],
-            'from_time' => ['required', 'date'],
-            'to_time' => ['required', 'date'],
+            'from_time' => ['required', 'date', 'before:to_time'],
+            'to_time' => ['required', 'date', 'after:from_time'],
             'topic' => ['required', 'string'],
             'type_of_booking' => ['required', 'string'],
-            'guests' => ['array'],
             'agenda' => ['string'],
             'objective' => ['string'],
             'material' => ['string'],
@@ -38,4 +38,5 @@ class BookingRequest extends FormRequest
             'booking_title' => ['required', 'string'],
         ];
     }
+
 }

@@ -37,9 +37,29 @@ class BookingRepository implements BaseBookingRepository
         return Booking::where('company_id', $id)->paginate(10);
     }
 
-    public function addGuest(array $data): bool
+    public function checkTime(string $from_time, string $to_time, string $meeting_room_id): bool
     {
-        return Booking::findOrFail($data['booking_id'])->guests()->create($data);
+        $booking_inrange = Booking::where('meeting_room_id', $meeting_room_id)
+            ->where('from_time', '<=', $from_time)
+            ->where('to_time', '>=', $to_time)
+            ->first();
+        $booking_overrange = Booking::where('meeting_room_id', $meeting_room_id)
+            ->where('from_time', '>=', $from_time)
+            ->where('to_time', '<=', $to_time)
+            ->first();
+        $booking_start = Booking::where('meeting_room_id', $meeting_room_id)
+            ->where('from_time', '<=', $from_time)
+            ->where('to_time', '>=', $from_time)
+            ->first();
+        $booking_end= Booking::where('meeting_room_id', $meeting_room_id)
+            ->where('from_time', '<=', $to_time)
+            ->where('to_time', '>=', $to_time)
+            ->first();
+        if ($booking_inrange || $booking_overrange ||$booking_start ||$booking_end) {
+            return false;
+        }
+        return true;
     }
+
 
 }
