@@ -128,4 +128,11 @@ return [
         ],
     ],
 
+    'error_logging' => [
+        'driver' => 'daily',
+        'path' => storage_path('logs/error.log'),
+        'level' => 'debug',
+        'days' => 0,
+    ],
+
 ];
