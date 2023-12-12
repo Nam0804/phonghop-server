@@ -26,6 +26,18 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name'=> 'delete-meeting-rooms']);
         Permission::create(['name'=> 'show-all-meeting-rooms']);
 
+        Permission::create(['name'=> 'add-new-users']);
+        Permission::create(['name' => 'update-user-information']);
+        Permission::create(['name' => 'show-users-information']);
+        Permission::create(['name' => 'show-users-details-information']);
+        Permission::create(['name'=> 'delete-user']);
+
+        Permission::create(['name'=> 'add-new-admin']);
+        Permission::create(['name' => 'update-admin-information']);
+        Permission::create(['name' => 'show-admin-information']);
+        Permission::create(['name' => 'show-admin-details-information']);
+        Permission::create(['name'=> 'delete-admin']);
+
         $adminRole = Role::create(['name' => 'admin']);
         $managerRole = Role::create(['name' => 'manager']);
         $userRole = Role::create(['name' => 'user']);
@@ -41,26 +53,45 @@ class RolesAndPermissionsSeeder extends Seeder
             'add-meeting-rooms',
             'delete-meeting-rooms',
             'show-meeting-rooms',
-            'show-all-meeting-rooms'
+            'show-all-meeting-rooms',
+            'add-new-users',
+            'update-user-information',
+            'show-users-information',
+            'show-users-details-information',
+            'delete-user',
+            'add-new-admin',
+            'update-admin-information',
+            'show-admin-information',
+            'show-admin-details-information',
+            'delete-admin'
         ]);
 
         $userRole->givePermissionTo([
             'show-all-company',
             'show-company',
+            'add-meeting-rooms',
             'show-meeting-rooms',
-            'show-all-meeting-rooms'
+            'show-all-meeting-rooms',
+            'show-users-information',
+            'show-users-details-information',
+            'update-user-information'
         ]);
         $managerRole->givePermissionTo([
             'show-all-company',
             'show-company',
             'update-company',
+            'add-meeting-rooms',
             'show-meeting-rooms',
             'show-all-meeting-rooms',
-            'update-meeting-rooms'
+            'update-meeting-rooms',
+            'update-user-information',
+            'show-users-information',
+            'show-users-details-information'
         ]);
         $guestRole->givePermissionTo([
             'show-all-company',
-            'show-all-meeting-rooms'
+            'add-meeting-rooms',
+            'show-all-meeting-rooms',
         ]);
     }
 }
