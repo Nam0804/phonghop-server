@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Booking;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookingRequest;
 use App\Http\Resources\BookingResource;
+use App\Http\Resources\BookingWithRegisterResource;
 use App\Models\MeetingRoom;
 use App\Repository\GuestRepository;
 use App\Repository\interface\BaseBookingRepository;
@@ -83,12 +84,18 @@ class BookingController extends Controller
                     'name' => $request->booking_name,
                     'email' => $request->booking_email,
                     'password' => Hash::make($request->password),
-                    'type' => $request->type,
+                    'type' => 2,
                     'phone' => $request->phone,
                     'title' => $request->booking_title,
                     'company_id' =>$this->meeting_room->companyFromMeetingRoom($request->meeting_room_id),
                     'is_first_login' => 1,
                 ]);
+                if ($user) {
+                    return $this->success([
+                        'data' => new BookingWithRegisterResource($booking),
+                        'message' => 'Booking created successfully',
+                    ], 200);
+                }
             }
             // If everything is successful, commit the transaction
             DB::commit();
@@ -122,20 +129,21 @@ class BookingController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
+        $booking = $this->booking->update($request->all(), $id);
+        if ($booking) {
+            return $this->success([
+                'data' => new BookingResource($booking),
+                'message' => 'Booking updated successfully',
+            ], 200);
+        }else{
+            return $this->error(null,'Booking not updated', 404);
+        }
     }
 
     /**

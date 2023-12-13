@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BookingResource extends JsonResource
+class BookingWithRegisterResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -22,6 +22,7 @@ class BookingResource extends JsonResource
                 'to_time'=> $this->to_time,
                 'topic'=> $this->topic,
                 'type_of_booking'=> $this->type_of_booking,
+                'guests'=> $this->guests,
                 'agenda'=> $this->agenda,
                 'objective'> $this->objective,
                 'material'=> $this->material,
@@ -43,7 +44,14 @@ class BookingResource extends JsonResource
                         'email' => $this->guests->email,
                     ],
                 ],
+                'user' => [
+                    'data' => [
+                        'id' => $this->user->id,
+                        'name' => $this->user->name,
+                    ],
+                ],
             ],
+
         ];
     }
 }
