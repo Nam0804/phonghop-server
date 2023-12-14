@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BookingRequest;
 use App\Http\Resources\BookingResource;
 use App\Http\Resources\BookingWithRegisterResource;
-use App\Models\MeetingRoom;
+use App\Http\Resources\UserResource;
 use App\Repository\GuestRepository;
 use App\Repository\interface\BaseBookingRepository;
 use App\Repository\interface\BaseMeetingRoomRepository;
 use App\Repository\interface\BaseUserRepository;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -60,6 +61,7 @@ class BookingController extends Controller
                     'objective' => $request->objective,
                     'material' => $request->material,
                     'register_status'=>$request->register_status,
+                    'repeat_type' => $request->repeat_type,
                     'sharing_confirmation' => $request->sharing_confirmation,
                     'booking_name' => $request->booking_name,
                     'booking_email' => $request->booking_email,
@@ -67,6 +69,9 @@ class BookingController extends Controller
                     'booking_company' => $request->booking_company,
                     'sharing_confirmation' => $request->sharing_confirmation,
                 ]);
+                if(Auth::user()){
+                    $booking->users()->attach(Auth::user());
+                }
 
             // Create guests associated with the meeting
             $guestEmails = $request->guests;
@@ -87,12 +92,14 @@ class BookingController extends Controller
                     'type' => 2,
                     'phone' => $request->phone,
                     'title' => $request->booking_title,
-                    'company_id' =>$this->meeting_room->companyFromMeetingRoom($request->meeting_room_id),
+                    'company_id' =>$this->meeting_room->show($request->meeting_room_id)->company_id,
                     'is_first_login' => 1,
                 ]);
                 if ($user) {
+                    $booking->users()->attach($user);
+                    DB::commit();
                     return $this->success([
-                        'data' => new BookingWithRegisterResource($booking),
+                        'data' => [new BookingResource($booking),new UserResource($user)],
                         'message' => 'Booking created successfully',
                     ], 200);
                 }
@@ -151,6 +158,19 @@ class BookingController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $booking = $this->booking->delete($id);
+        if ($booking) {
+            return $this->success([
+                'data' => new BookingResource($booking),
+                'message' => 'Booking deleted successfully',
+            ], 200);
+        }else{
+            return $this->error(null,'Booking not deleted', 404);
+        }
+    }
+
+    public function bookingHistory($user_id){
+        $booking_list = $this->user->bookingHistory($user_id);
+        return BookingResource::collection($booking_list);
     }
 }

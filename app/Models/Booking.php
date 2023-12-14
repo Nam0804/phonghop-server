@@ -25,11 +25,12 @@ class Booking extends Model
         'booking_email',
         'booking_title',
         'booking_company',
-        'register_status'
+        'register_status',
+        'repeat_type'
     ];
 
     // relationship 1-many with meeting room
-    public function meetingRoom()
+    public function meeting_room()
     {
         return $this->belongsTo(MeetingRoom::class);
     }
@@ -37,5 +38,10 @@ class Booking extends Model
     public function guests()
     {
         return $this->hasMany(Guest::class);
+    }
+    // relationship many-many with user
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
     }
 }

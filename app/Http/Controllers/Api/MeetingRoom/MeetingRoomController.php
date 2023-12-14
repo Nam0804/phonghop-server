@@ -10,7 +10,7 @@ use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class MeetingRoomcontroller extends Controller
+class MeetingRoomController extends Controller
 {
     use HttpResponses;
     protected $meetingRoom;

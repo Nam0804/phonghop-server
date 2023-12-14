@@ -4,7 +4,7 @@ use App\Http\Controllers\Api\Admin\AdminApiController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Booking\BookingController;
 use App\Http\Controllers\Api\Company\CompanyController;
-use App\Http\Controllers\Api\MeetingRoom\MeetingRoomcontroller;
+use App\Http\Controllers\Api\MeetingRoom\MeetingRoomController;
 use App\Http\Controllers\Api\User\UserApiController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,10 +30,12 @@ Route::resource('users', UserApiController::class);
 Route::get('/users/company/{company_id}', [UserApiController::class, 'CompanyUsers']);
 Route::get('/auth/verify-email/{token}', [UserApiController::class, 'verifyEmail'])->name('verify.email');
 Route::resource('admins', AdminApiController::class);
-Route::resource('bookings', BookingController::class);
+
 // Authenticated Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::resource('bookings', BookingController::class);
+    Route::post('/bookings/history/{user_id}', [BookingController::class, 'bookingHistory']);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
-    Route::get('/meeting-rooms/listing/{company_id}', [MeetingRoomcontroller::class, 'CompanyMeetingRooms']);
-    Route::resource('meeting-rooms', MeetingRoomcontroller::class);
+    Route::get('/meeting-rooms/listing/{company_id}', [MeetingRoomController::class, 'CompanyMeetingRooms']);
+    Route::resource('meeting-rooms', MeetingRoomController::class);
 });

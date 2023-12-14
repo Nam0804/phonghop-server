@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('material')->nullable();
             $table->integer('sharing_confirmation')->default(0); // 0 = not shared, 1 = shared
             $table->integer('register_status')->default(0); // 0 = not registered, 1 = going to attend
+            $table->integer('repeat_type')->default(0); // 0 = not repeated, 1 = daily, 2 = weekly, 3 = monthly,4 = yearly
             $table->string('booking_name');
             $table->string('booking_email');
             $table->string('booking_title');

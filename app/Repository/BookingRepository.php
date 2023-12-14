@@ -60,6 +60,4 @@ class BookingRepository implements BaseBookingRepository
         }
         return true;
     }
-
-
 }

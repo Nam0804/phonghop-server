@@ -39,11 +39,6 @@ class BookingWithRegisterResource extends JsonResource
                         'name' => $this->meeting_room->name,
                     ],
                 ],
-                'guests' => [
-                    'data' => [
-                        'email' => $this->guests->email,
-                    ],
-                ],
                 'user' => [
                     'data' => [
                         'id' => $this->user->id,
@@ -51,7 +46,6 @@ class BookingWithRegisterResource extends JsonResource
                     ],
                 ],
             ],
-
         ];
     }
 }
