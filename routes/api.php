@@ -32,6 +32,7 @@ Route::resource('admins', AdminApiController::class);
 
 // Authenticated Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/auth/user/reset-password', [UserApiController::class, 'changePassword']);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('/meeting-rooms/listing/{company_id}', [MeetingRoomcontroller::class, 'CompanyMeetingRooms']);
     Route::resource('meeting-rooms', MeetingRoomcontroller::class);
