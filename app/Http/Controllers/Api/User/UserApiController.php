@@ -26,12 +26,8 @@ class UserApiController extends Controller
      */
     public function index()
     {
-        if(auth()->user()->can('show-users-information')){
-            $users = $this->user->list();
-            return $users;
-        }else{
-            abort(403, 'You need permission to do this action.');
-        }
+        $users = $this->user->list();
+        return $users;
     }
 
     /**
@@ -39,28 +35,24 @@ class UserApiController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        if(auth()->user()->can('add-new-users')){
-            $request->validated($request->all());
-            $user = $this->user->create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'type' => $request->type,
-                'phone' => $request->phone,
-                'title' => $request->title,
-                'company_id' => $request->company_id,
-                'is_first_login' => 1,
-            ]);
-            if ($user) {
-                Mail::to($user->email)->send(new SendCreateMail($user->email,$request->password, $user->name));
-            }
-            return $this->success([
-                'data' => new UserResource($user),
-                'message' => 'User created successfully',
-            ], 200);
-        }else{
-            abort(403, 'You need permission to do this action.');
+        $request->validated($request->all());
+        $user = $this->user->create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'type' => $request->type,
+            'phone' => $request->phone,
+            'title' => $request->title,
+            'company_id' => $request->company_id,
+            'is_first_login' => 1,
+        ]);
+        if ($user) {
+            Mail::to($user->email)->send(new SendCreateMail($user->email, $request->password, $user->name));
         }
+        return $this->success([
+            'data' => new UserResource($user),
+            'message' => 'User created successfully',
+        ], 200);
     }
 
     /**
@@ -68,15 +60,11 @@ class UserApiController extends Controller
      */
     public function show(string $id)
     {
-        if(auth()->user()->can('show-users-details-information')){
-            $user = $this->user->show($id);
-            return $this->success([
-                'data' => new UserResource($user),
-                'message' => null,
-            ], 201);
-        }else{
-            abort(403, 'You need permission to do this action.');
-        }
+        $user = $this->user->show($id);
+        return $this->success([
+            'data' => new UserResource($user),
+            'message' => null,
+        ], 201);
     }
 
     /**
@@ -84,20 +72,15 @@ class UserApiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        if(auth()->user()->can('update-user-information')){
-            $update = $this->user->update($request->all(), $id);
-            if($update){
-                $user = $this->user->show($id);
-                return $this->success([
-                    'data' => new UserResource($user),
-                    'message' => 'User updated successfully',
-                ], 200);
-            }
-            else{
-                return $this->error(null,'User not updated',400);
-            }
-        }else{
-            abort(403, 'You need permission to do this action.');
+        $update = $this->user->update($request->all(), $id);
+        if ($update) {
+            $user = $this->user->show($id);
+            return $this->success([
+                'data' => new UserResource($user),
+                'message' => 'User updated successfully',
+            ], 200);
+        } else {
+            return $this->error(null, 'User not updated', 400);
         }
 
     }
@@ -107,15 +90,11 @@ class UserApiController extends Controller
      */
     public function destroy(string $id)
     {
-        if(auth()->user()->can('delete-user')){
-            $user = $this->user->delete($id);
-            return $this->success([
-                'data' => null,
-                'message' => 'User deleted successfully',
-            ], 200);
-        }else{
-            abort(403, 'You need permission to do this action.');
-        }
+        $user = $this->user->delete($id);
+        return $this->success([
+            'data' => null,
+            'message' => 'User deleted successfully',
+        ], 200);
     }
     public function CompanyUsers(string $company_id)
     {

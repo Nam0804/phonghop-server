@@ -30,12 +30,9 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        if(auth()->user()->can('show-all-company')){
-            return CompanyResource::collection(
-                Company::all());
-        }else{
-            abort(403, 'You need permission to do this action.');
-        }
+        return CompanyResource::collection(
+            Company::all());
+
 
     }
 
@@ -47,16 +44,12 @@ class CompanyController extends Controller
      */
     public function store(StoreCompanyRequest $request)
     {
-        if(auth()->user()->can('add-company')){
-            $company = Company::create($request->validated());
+        $company = Company::create($request->validated());
 
-            return $this->success([
-                'data' => new CompanyResource($company),
-                'message' => 'Company created successfully',
-            ], 201);
-        }else{
-            abort(403, 'You need permission to do this action.');
-        }
+        return $this->success([
+            'data' => new CompanyResource($company),
+            'message' => 'Company created successfully',
+        ], 201);
 
     }
 
@@ -68,13 +61,9 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        if(auth()->user()->can('show-company')){
-            return new CompanyResource(
-                Company::findOrFail($company->id)
-            );
-        }else{
-            abort(403, 'You need permission to do this action.');
-        }
+        return new CompanyResource(
+            Company::findOrFail($company->id)
+        );
         // return $this->isNotAuthorized($company) ? $this->isNotAuthorized($company) : new CompanyResource($company);
 
     }
@@ -84,12 +73,8 @@ class CompanyController extends Controller
      */
     public function update(Request $request, Company $company)
     {
-        if(auth()->user()->can('update-company')){
-            $company->update($request->all());
-            return new CompanyResource($company);
-        }else{
-            abort(403, 'You need permission to do this action.');
-        }
+        $company->update($request->all());
+        return new CompanyResource($company);
 
     }
 
@@ -98,16 +83,12 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-//        if ($this->isNotAuthorized($company)) {
+        //        if ($this->isNotAuthorized($company)) {
 //            return $this->isNotAuthorized($company);
 //        }
 
-        if(auth()->user()->can('delete-company')){
-            $company->delete();
-            return $this->success(null, 'Company deleted successfully', 200);
-        }else{
-            abort(403, 'You need permission to do this action.');
-        }
+        $company->delete();
+        return $this->success(null, 'Company deleted successfully', 200);
 
     }
 }

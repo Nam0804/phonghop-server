@@ -23,14 +23,9 @@ class MeetingRoomcontroller extends Controller
      */
     public function index()
     {
-        if(auth()->user()->can('show-all-meeting-rooms')){
-            $company_id = Auth::user()->company_id;
-            $meetingRooms = $this->meetingRoom->list($company_id);
-            return $meetingRooms;
-        }else{
-            abort(403, 'You need permission to do this action.');
-        }
-
+        $company_id = Auth::user()->company_id;
+        $meetingRooms = $this->meetingRoom->list($company_id);
+        return $meetingRooms;
     }
 
     /**
@@ -38,43 +33,38 @@ class MeetingRoomcontroller extends Controller
      */
     public function store(MeetingRoomRequest $request)
     {
-        if(auth()->user()->can('add-meeting-rooms')){
-            $request->validated($request->all());
-            if ($request->hasFile('image')) {
-                $image_path = $request->file('image')->store('image', 'public');
-                $meetingRoom = $this->meetingRoom->create([
-                    'name' => $request->name,
-                    'location' => $request->location,
-                    'floor' => $request->floor,
-                    'capacity' => $request->capacity,
-                    'equipment' => $request->equipment,
-                    'image' => $image_path,
-                    'availability' => $request->availability,
-                    'company_id' => $request->company_id,
-                ]);
-            }
-            else{
-                $meetingRoom = $this->meetingRoom->create([
-                    'name' => $request->name,
-                    'location' => $request->location,
-                    'floor' => $request->floor,
-                    'capacity' => $request->capacity,
-                    'equipment' => $request->equipment,
-                    'availability' => $request->availability,
-                    'company_id' => $request->company_id,
-                ]);
-            }
+        $request->validated($request->all());
+        if ($request->hasFile('image')) {
+            $image_path = $request->file('image')->store('image', 'public');
+            $meetingRoom = $this->meetingRoom->create([
+                'name' => $request->name,
+                'location' => $request->location,
+                'floor' => $request->floor,
+                'capacity' => $request->capacity,
+                'equipment' => $request->equipment,
+                'image' => $image_path,
+                'availability' => $request->availability,
+                'company_id' => $request->company_id,
+            ]);
+        } else {
+            $meetingRoom = $this->meetingRoom->create([
+                'name' => $request->name,
+                'location' => $request->location,
+                'floor' => $request->floor,
+                'capacity' => $request->capacity,
+                'equipment' => $request->equipment,
+                'availability' => $request->availability,
+                'company_id' => $request->company_id,
+            ]);
+        }
 
-            if ($meetingRoom) {
-                return $this->success([
-                    'data' => new MeetingRoomResource($meetingRoom),
-                    'message' => 'Meeting Room created successfully',
-                ], 200);
-            }else{
-                return $this->error(null,'Meeting Room not created', 400);
-            }
-        }else{
-            abort(403, 'You need permission to do this action.');
+        if ($meetingRoom) {
+            return $this->success([
+                'data' => new MeetingRoomResource($meetingRoom),
+                'message' => 'Meeting Room created successfully',
+            ], 200);
+        } else {
+            return $this->error(null, 'Meeting Room not created', 400);
         }
 
     }
@@ -84,18 +74,14 @@ class MeetingRoomcontroller extends Controller
      */
     public function show(string $id)
     {
-        if(auth()->user()->can('show-meeting-rooms')){
-            $meetingRoom = $this->meetingRoom->show($id);
-            if ($meetingRoom) {
-                return $this->success([
-                    'data' => new MeetingRoomResource($meetingRoom),
-                    'message' => 'Meeting Room found successfully',
-                ], 200);
-            } else {
-                return $this->error(null, 'Meeting Room not found', 400);
-            }
-        }else{
-            abort(403, 'You need permission to do this action.');
+        $meetingRoom = $this->meetingRoom->show($id);
+        if ($meetingRoom) {
+            return $this->success([
+                'data' => new MeetingRoomResource($meetingRoom),
+                'message' => 'Meeting Room found successfully',
+            ], 200);
+        } else {
+            return $this->error(null, 'Meeting Room not found', 400);
         }
     }
 
@@ -104,20 +90,15 @@ class MeetingRoomcontroller extends Controller
      */
     public function update(Request $request, string $id)
     {
-        if(auth()->user()->can('update-meeting-rooms')){
-            $meetingRoom = $this->meetingRoom->update($request->all(), $id);
-            if ($meetingRoom) {
-                return $this->success([
-                    'data' => new MeetingRoomResource($meetingRoom),
-                    'message' => 'Meeting Room updated successfully',
-                ], 200);
-            } else {
-                return $this->error(null, 'Meeting Room not updated', 400);
-            }
-        }else{
-            abort(403, 'You need permission to do this action.');
+        $meetingRoom = $this->meetingRoom->update($request->all(), $id);
+        if ($meetingRoom) {
+            return $this->success([
+                'data' => new MeetingRoomResource($meetingRoom),
+                'message' => 'Meeting Room updated successfully',
+            ], 200);
+        } else {
+            return $this->error(null, 'Meeting Room not updated', 400);
         }
-
     }
 
     /**
@@ -125,11 +106,7 @@ class MeetingRoomcontroller extends Controller
      */
     public function destroy(string $id)
     {
-        if(auth()->user()->can('delete-meeting-rooms')){
-            //logic for this function
-        }else{
-            abort(403, 'You need permission to do this action.');
-        }
+        //logic for this function
     }
     public function CompanyMeetingRooms(string $company_id)
     {
