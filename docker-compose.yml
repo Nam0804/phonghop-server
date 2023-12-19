@@ -20,6 +20,7 @@ services:
         image: mysql:8.0
         ports:
             - 3306:3306
+            - 3307:3307
         container_name: phonghop-db
         restart: unless-stopped
         env_file: .env
