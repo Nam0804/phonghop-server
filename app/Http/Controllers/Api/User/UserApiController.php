@@ -122,4 +122,19 @@ class UserApiController extends Controller
 
         return response()->json(['message' => 'Email verified successfully.'], 200);
     }
+
+    public function changePassword(Request $request)
+    {
+        $user = $this->user->show($request->user_id);
+        if (Hash::check($request->old_password, $user->password)) {
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+            return $this->success([
+                'data' => null,
+                'message' => 'Password changed successfully',
+            ], 200);
+        } else {
+            return $this->error(null, 'Old password is incorrect', 400);
+        }
+    }
 }

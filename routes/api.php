@@ -30,6 +30,7 @@ Route::get('set-role', [\App\Http\Controllers\Api\RolesAndPermissionsController:
 Route::post('create-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'createNewRole']);
 // Authenticated Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/auth/user/reset-password', [UserApiController::class, 'changePassword']);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('/meeting-rooms/listing/{company_id}', [MeetingRoomcontroller::class, 'CompanyMeetingRooms']);    
     
