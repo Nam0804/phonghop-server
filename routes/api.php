@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Company\CompanyController;
 use App\Http\Controllers\Api\MeetingRoom\MeetingRoomcontroller;
 use App\Http\Controllers\Api\User\UserApiController;
+use App\Models\Company;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,7 +30,7 @@ Route::resource('users', UserApiController::class);
 Route::get('/users/company/{company_id}', [UserApiController::class, 'CompanyUsers']);
 Route::get('/auth/verify-email/{token}', [UserApiController::class, 'verifyEmail'])->name('verify.email');
 Route::resource('admins', AdminApiController::class);
-
+Route::post('/user/register/company',[CompanyController::class,'registerNewCompany']);
 // Authenticated Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/auth/user/reset-password', [UserApiController::class, 'changePassword']);
