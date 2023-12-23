@@ -39,12 +39,12 @@ class UserApiController extends Controller
         $user = $this->user->create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'type' => $request->type,
+           'password' => Hash::make($request->password),
+           'type' => $request->type,
             'phone' => $request->phone,
             'title' => $request->title,
-            'company_id' => $request->company_id,
-            'is_first_login' => 1,
+           'company_id' => $request->company_id,
+           'is_first_login' => 1,
         ]);
         if ($user) {
             Mail::to($user->email)->send(new SendCreateMail($user->email, $request->password, $user->name));
