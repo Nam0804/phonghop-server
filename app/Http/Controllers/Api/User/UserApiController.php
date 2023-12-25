@@ -44,7 +44,7 @@ class UserApiController extends Controller
             'phone' => $request->phone,
             'title' => $request->title,
             'company_id' => $request->company_id,
-            'is_first_login' => 1,
+            'is_first_login' => 0,
         ]);
         if ($user) {
             Mail::to($user->email)->send(new SendCreateMail($user->email,$request->password, $user->name));
