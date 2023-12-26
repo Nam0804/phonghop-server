@@ -77,7 +77,7 @@ class AdminApiController extends Controller
                 'message' => 'Admin updated successfully',
             ], 200);
         } else {
-            return $this->error('','Admin not updated',400);
+            return $this->error('', 'Admin not updated', 400);
         }
     }
 
