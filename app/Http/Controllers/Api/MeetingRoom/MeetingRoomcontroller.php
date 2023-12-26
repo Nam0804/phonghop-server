@@ -33,7 +33,6 @@ class MeetingRoomcontroller extends Controller
      */
     public function store(MeetingRoomRequest $request)
     {
-        // dd($request->all());
         $request->validated($request->all());
         if ($request->hasFile('image')) {
             $image_path = $request->file('image')->store('image', 'public');

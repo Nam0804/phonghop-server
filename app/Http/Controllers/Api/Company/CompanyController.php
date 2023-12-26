@@ -85,7 +85,6 @@ class CompanyController extends Controller
 
     public function registerNewCompany(CreateCompanyManager $request)
     {
-        dd($request->validated($request->all()));
         $request->validated($request->all());
         DB::beginTransaction();
         try {
