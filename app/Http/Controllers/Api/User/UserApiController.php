@@ -43,8 +43,8 @@ class UserApiController extends Controller
            'type' => $request->type,
             'phone' => $request->phone,
             'title' => $request->title,
-           'company_id' => $request->company_id,
-           'is_first_login' => 1,
+            'company_id' => $request->company_id,
+            'is_first_login' => 0,
         ]);
         if ($user) {
             Mail::to($user->email)->send(new SendCreateMail($user->email, $request->password, $user->name));
@@ -137,4 +137,19 @@ class UserApiController extends Controller
             return $this->error(null, 'Old password is incorrect', 400);
         }
     }
+
+// using the auth middleware to get the authenticated user
+    public function profile()
+    {
+        $user = auth('sanctum')->user();
+        if ($user) {
+            return $this->success([
+                'data' => new UserResource($user),
+                'message' => null,
+            ], 200);
+        } else {
+            return $this->error(null, 'User not found', 400);
+        }
+    }
+    
 }

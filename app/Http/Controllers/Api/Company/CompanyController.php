@@ -3,26 +3,27 @@
 namespace App\Http\Controllers\Api\Company;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Company\CreateCompanyManager;
 use App\Http\Requests\Company\StoreCompanyRequest;
 use App\Http\Resources\CompanyResource;
+use App\Http\Resources\UserResource;
 use App\Models\Company;
-use App\Models\User;
+use App\Repository\interface\BaseCompanyRepository;
+use App\Repository\interface\BaseUserRepository;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class CompanyController extends Controller
 {
     use HttpResponses;
-
-    /**
-     * Check if the user is authorized to access this company
-     */
-    private function isNotAuthorized(Company $company)
+    protected $company,$user;
+    public function __construct(BaseCompanyRepository $company,BaseUserRepository $user)
     {
-        if (!Auth::user()->isManager() && Auth::user()->company_id !== $company->id) {
-            return $this->error('', 'You are not authorized to access this company', 403);
-        }
+        $this->company = $company;
+        $this->user = $user;
     }
 
     /**
@@ -83,12 +84,84 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        //        if ($this->isNotAuthorized($company)) {
-//            return $this->isNotAuthorized($company);
-//        }
-
         $company->delete();
         return $this->success(null, 'Company deleted successfully', 200);
 
+    }
+
+    public function registerNewCompany(CreateCompanyManager $request)
+    {
+        $request->validated($request->all());
+        DB::beginTransaction();
+        try {
+            $company = $this->company->create([
+                'company_name' => $request->company_name,
+                'company_address' => $request->company_address,
+                'company_domain' => $request->company_domain,
+                'company_tax_code' => $request->company_taxcode,
+            ]);
+            if ($company) {
+                $user = $this->user->create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'type' => 1,
+                    'phone' => $request->phone,
+                    'title' => $request->title,
+                    'company_id' => $company->id,
+                    'is_first_login' => 0,
+                ]);
+                if ($user) {
+                    DB::commit();
+                    return $this->success([
+                        'data' => [new CompanyResource($company),new UserResource($user)],
+                        'message' => 'Company and Manager created successfully',
+                    ], 200);
+                }
+            }
+
+        } catch (\Exception $e) {
+            // If an error occurs, rollback the transaction
+            DB::rollBack();
+            return $this->error(null,'Company and Manager not created', 404);
+        }
+    }
+
+    public function registerNewCompany(CreateCompanyManager $request)
+    {
+        $request->validated($request->all());
+        DB::beginTransaction();
+        try {
+            $company = $this->company->create([
+                'company_name' => $request->company_name,
+                'company_address' => $request->company_address,
+                'company_domain' => $request->company_domain,
+                'company_tax_code' => $request->company_taxcode,
+            ]);
+            if ($company) {
+                $user = $this->user->create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'type' => 1,
+                    'phone' => $request->phone,
+                    'title' => $request->title,
+                    'company_id' => $company->id,
+                    'is_first_login' => 0,
+                ]);
+                if ($user) {
+                    DB::commit();
+                    return $this->success([
+                        'data' => [new CompanyResource($company),new UserResource($user)],
+                        'message' => 'Company and Manager created successfully',
+                    ], 200);
+                }
+            }
+
+        } catch (\Exception $e) {
+            // If an error occurs, rollback the transaction
+            DB::rollBack();
+            return $this->error(null,'Company and Manager not created', 404);
+        }
     }
 }
