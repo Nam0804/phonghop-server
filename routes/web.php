@@ -53,6 +53,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
             Route::get('/forgot-password-admin', 'LoginController@show')->name('forgot-password.show');
         }
     });
+    //Queue mail jobs routes
     Route::get('reset-password/{token}',[AuthController::class,'resetPassword'])->name('reset-password');
     Route::get('send-mail', [MailController::class, 'sendMail']);
 });

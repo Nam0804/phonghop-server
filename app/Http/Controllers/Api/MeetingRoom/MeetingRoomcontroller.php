@@ -33,7 +33,6 @@ class MeetingRoomcontroller extends Controller
      */
     public function store(MeetingRoomRequest $request)
     {
-        // dd($request->all());
         $request->validated($request->all());
         if ($request->hasFile('image')) {
             $image_path = $request->file('image')->store('image', 'public');
@@ -47,8 +46,7 @@ class MeetingRoomcontroller extends Controller
                 'availability' => $request->availability,
                 'company_id' => $request->company_id,
             ]);
-        }
-        else{
+        } else {
             $meetingRoom = $this->meetingRoom->create([
                 'name' => $request->name,
                 'location' => $request->location,
@@ -60,15 +58,15 @@ class MeetingRoomcontroller extends Controller
             ]);
         }
 
-
         if ($meetingRoom) {
             return $this->success([
                 'data' => new MeetingRoomResource($meetingRoom),
                 'message' => 'Meeting Room created successfully',
             ], 200);
-        }else{
-            return $this->error(null,'Meeting Room not created', 400);
+        } else {
+            return $this->error(null, 'Meeting Room not created', 400);
         }
+
     }
 
     /**
@@ -85,7 +83,6 @@ class MeetingRoomcontroller extends Controller
         } else {
             return $this->error(null, 'Meeting Room not found', 400);
         }
-
     }
 
     /**
@@ -109,7 +106,7 @@ class MeetingRoomcontroller extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        //logic for this function
     }
     public function CompanyMeetingRooms(string $company_id)
     {

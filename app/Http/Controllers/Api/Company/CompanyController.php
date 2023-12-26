@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Company\StoreCompanyRequest;
 use App\Http\Resources\CompanyResource;
 use App\Models\Company;
+use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,24 +14,26 @@ use Illuminate\Support\Facades\Auth;
 class CompanyController extends Controller
 {
     use HttpResponses;
+
     /**
      * Check if the user is authorized to access this company
      */
     private function isNotAuthorized(Company $company)
     {
         if (!Auth::user()->isManager() && Auth::user()->company_id !== $company->id) {
-            return $this->error('','You are not authorized to access this company', 403);
+            return $this->error('', 'You are not authorized to access this company', 403);
         }
-
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         return CompanyResource::collection(
-            Company::all()
-        );
+            Company::all());
+
+
     }
 
     /**
@@ -47,6 +50,7 @@ class CompanyController extends Controller
             'data' => new CompanyResource($company),
             'message' => 'Company created successfully',
         ], 201);
+
     }
 
     /**
@@ -57,10 +61,11 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        // return $this->isNotAuthorized($company) ? $this->isNotAuthorized($company) : new CompanyResource($company);
         return new CompanyResource(
             Company::findOrFail($company->id)
         );
+        // return $this->isNotAuthorized($company) ? $this->isNotAuthorized($company) : new CompanyResource($company);
+
     }
 
     /**
@@ -70,6 +75,7 @@ class CompanyController extends Controller
     {
         $company->update($request->all());
         return new CompanyResource($company);
+
     }
 
     /**
@@ -77,11 +83,12 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-//        if ($this->isNotAuthorized($company)) {
+        //        if ($this->isNotAuthorized($company)) {
 //            return $this->isNotAuthorized($company);
 //        }
 
         $company->delete();
-        return $this->success(null,'Company deleted successfully',200);
+        return $this->success(null, 'Company deleted successfully', 200);
+
     }
 }

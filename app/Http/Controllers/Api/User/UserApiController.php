@@ -39,15 +39,15 @@ class UserApiController extends Controller
         $user = $this->user->create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'type' => $request->type,
+           'password' => Hash::make($request->password),
+           'type' => $request->type,
             'phone' => $request->phone,
             'title' => $request->title,
-            'company_id' => $request->company_id,
-            'is_first_login' => 1,
+           'company_id' => $request->company_id,
+           'is_first_login' => 1,
         ]);
         if ($user) {
-            Mail::to($user->email)->send(new SendCreateMail($user->email,$request->password, $user->name));
+            Mail::to($user->email)->send(new SendCreateMail($user->email, $request->password, $user->name));
         }
         return $this->success([
             'data' => new UserResource($user),
@@ -73,15 +73,14 @@ class UserApiController extends Controller
     public function update(Request $request, string $id)
     {
         $update = $this->user->update($request->all(), $id);
-        if($update){
+        if ($update) {
             $user = $this->user->show($id);
             return $this->success([
                 'data' => new UserResource($user),
                 'message' => 'User updated successfully',
             ], 200);
-        }
-        else{
-            return $this->error(null,'User not updated',400);
+        } else {
+            return $this->error(null, 'User not updated', 400);
         }
 
     }
