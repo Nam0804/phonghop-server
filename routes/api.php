@@ -42,21 +42,21 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('index-companies', [CompanyController::class, 'index'])->middleware('permission:show-all-company');
     Route::post('store-company', [CompanyController::class, 'store'])->middleware('permission:add-company');
-    Route::get('show-company', [CompanyController::class, 'show'])->middleware('permission:show-company');
-    Route::put('update-company', [CompanyController::class, 'update'])->middleware('permission:update-company');
-    Route::delete('delete-company', [CompanyController::class, 'destroy'])->middleware('permission:delete-company');
+    Route::get('show-company/{id}', [CompanyController::class, 'show'])->middleware('permission:show-company');
+    Route::put('update-company/{id}', [CompanyController::class, 'update'])->middleware('permission:update-company');
+    Route::delete('delete-company/{id}', [CompanyController::class, 'destroy'])->middleware('permission:delete-company');
 
     Route::get('index-meeting-rooms', [MeetingRoomcontroller::class, 'index'])->middleware('permission:show-all-meeting-rooms');
     Route::post('store-meeting-room', [MeetingRoomcontroller::class, 'store'])->middleware('permission:add-meeting-rooms');
-    Route::get('show-meeting-room', [MeetingRoomcontroller::class, 'show'])->middleware('permission:show-meeting-rooms');
-    Route::put('update-meeting-room', [MeetingRoomcontroller::class, 'update'])->middleware('permission:update-meeting-rooms');
-    Route::delete('delete-meeting-room', [MeetingRoomcontroller::class, 'destroy'])->middleware('permission:delete-meeting-rooms');
+    Route::get('show-meeting-room/{id}', [MeetingRoomcontroller::class, 'show'])->middleware('permission:show-meeting-rooms');
+    Route::put('update-meeting-room/{id}', [MeetingRoomcontroller::class, 'update'])->middleware('permission:update-meeting-rooms');
+    Route::delete('delete-meeting-room/{id}', [MeetingRoomcontroller::class, 'destroy'])->middleware('permission:delete-meeting-rooms');
 
     Route::get('index-users', [UserApiController::class, 'index'])->middleware('permission:show-users-information');
     Route::post('store-user', [UserApiController::class, 'store'])->middleware('permission:add-new-users');
-    Route::get('show-user', [UserApiController::class, 'show'])->middleware('permission:show-users-details-information');
-    Route::put('update-user', [UserApiController::class, 'update'])->middleware('permission:update-user-information');
-    Route::delete('delete-users', [UserApiController::class, 'destroy'])->middleware('permission:delete-user');
+    Route::get('show-user/{id}', [UserApiController::class, 'show'])->middleware('permission:show-users-details-information');
+    Route::put('update-user/{id}', [UserApiController::class, 'update'])->middleware('permission:update-user-information');
+    Route::delete('delete-users/{id}', [UserApiController::class, 'destroy'])->middleware('permission:delete-user');
 
 
     Route::group(['middleware' => ['role:admin']], function (){
