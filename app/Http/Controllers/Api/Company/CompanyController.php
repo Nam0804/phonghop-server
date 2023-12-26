@@ -117,7 +117,6 @@ class CompanyController extends Controller
         } catch (\Exception $e) {
             // If an error occurs, rollback the transaction
             DB::rollBack();
-            dd($e);
             return $this->error(null,'Company and Manager not created', 404);
         }
     }
