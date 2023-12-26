@@ -33,6 +33,7 @@ Route::resource('admins', AdminApiController::class);
 Route::post('/user/register/company',[CompanyController::class,'registerNewCompany']);
 // Authenticated Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/profile', [UserApiController::class, 'profile']);
     Route::get('/auth/user/reset-password', [UserApiController::class, 'changePassword']);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('/meeting-rooms/listing/{company_id}', [MeetingRoomcontroller::class, 'CompanyMeetingRooms']);

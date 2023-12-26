@@ -138,4 +138,19 @@ class UserApiController extends Controller
             return $this->error(null, 'Old password is incorrect', 400);
         }
     }
+
+// using the auth middleware to get the authenticated user
+    public function profile()
+    {
+        $user = auth('sanctum')->user();
+        if ($user) {
+            return $this->success([
+                'data' => new UserResource($user),
+                'message' => null,
+            ], 200);
+        } else {
+            return $this->error(null, 'User not found', 400);
+        }
+    }
+    
 }
