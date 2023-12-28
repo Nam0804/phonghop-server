@@ -10,6 +10,8 @@ use App\Repository\MeetingRoomRepository;
 use App\Repository\UserRepository;
 use App\Repository\interface\BaseAdminRepository;
 use App\Repository\AdminRepository;
+use App\Repository\CompanyRepository;
+use App\Repository\interface\BaseCompanyRepository;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(BaseMeetingRoomRepository::class, MeetingRoomRepository::class);
         $this->app->bind(BaseBookingRepository::class, BookingRepository::class);
         $this->app->bind(BaseGuestRepository::class, GuestRepository::class);
+        $this->app->bind(BaseCompanyRepository::class, CompanyRepository::class);
 
     }
 
