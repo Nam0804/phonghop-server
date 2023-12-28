@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Company;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Company\CreateCompanyManager;
 use App\Http\Requests\Company\StoreCompanyRequest;
+use App\Http\Resources\CompanyManagerResource;
 use App\Http\Resources\CompanyResource;
 use App\Http\Resources\UserResource;
 use App\Models\Company;
@@ -31,10 +32,11 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        return CompanyResource::collection(
-            Company::all());
-
-
+        $list_company = $this->company->list();
+            return $this->success([
+                'data' => CompanyManagerResource::collection($list_company),
+                'message' => 'Companies listing successfully',
+            ], 201);
     }
 
     /**
@@ -126,42 +128,14 @@ class CompanyController extends Controller
             return $this->error(null,'Company and Manager not created', 404);
         }
     }
-
-    public function registerNewCompany(CreateCompanyManager $request)
+    public function managerShowCompany()
     {
-        $request->validated($request->all());
-        DB::beginTransaction();
-        try {
-            $company = $this->company->create([
-                'company_name' => $request->company_name,
-                'company_address' => $request->company_address,
-                'company_domain' => $request->company_domain,
-                'company_tax_code' => $request->company_taxcode,
-            ]);
-            if ($company) {
-                $user = $this->user->create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                    'type' => 1,
-                    'phone' => $request->phone,
-                    'title' => $request->title,
-                    'company_id' => $company->id,
-                    'is_first_login' => 0,
-                ]);
-                if ($user) {
-                    DB::commit();
-                    return $this->success([
-                        'data' => [new CompanyResource($company),new UserResource($user)],
-                        'message' => 'Company and Manager created successfully',
-                    ], 200);
-                }
-            }
-
-        } catch (\Exception $e) {
-            // If an error occurs, rollback the transaction
-            DB::rollBack();
-            return $this->error(null,'Company and Manager not created', 404);
+//        $this->company->managerShowCompany()
+        $user = auth('sanctum')->user();
+        dd($user->type);
+        if($user->type ==1){
+            dd('check');
         }
     }
+
 }

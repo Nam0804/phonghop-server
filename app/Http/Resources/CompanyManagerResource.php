@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class CompanyManagerResource extends JsonResource
 {
+
     /**
      * Transform the resource into an array.
      *
@@ -14,7 +15,6 @@ class CompanyManagerResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // return parent::toArray($request);
         return [
             'id' => $this->id,
             'attributes' => [

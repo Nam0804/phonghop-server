@@ -30,11 +30,12 @@ Route::get('/users/company/{company_id}', [UserApiController::class, 'CompanyUse
 Route::get('/auth/verify-email/{token}', [UserApiController::class, 'verifyEmail'])->name('verify.email');
 Route::resource('admins', AdminApiController::class);
 Route::post('/user/register/company',[CompanyController::class,'registerNewCompany']);
+Route::get('set-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'assignRole']);
+
 // Authenticated Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    
+
     Route::get('/profile', [UserApiController::class, 'profile']);
-    Route::get('set-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'assignRole']);
     Route::post('create-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'createNewRole']);
     Route::get('/auth/user/reset-password', [UserApiController::class, 'changePassword']);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
