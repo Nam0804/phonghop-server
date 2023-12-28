@@ -41,4 +41,15 @@ class UserRepository implements BaseUserRepository
     {
         return User::where('email_verified_token', $token)->update(['is_first_login' => 0,'email_verified_at' => now(),'email_verified_token' => null]);
     }
+    public function bookingHistory(string $user_id): LengthAwarePaginator
+    {
+        $user = User::find($user_id);
+        if ($user) {
+            $bookings = $user->bookings()->paginate(10);
+            return $bookings;
+        }else{
+            return null;
+        }
+
+    }
 }

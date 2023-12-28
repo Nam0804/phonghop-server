@@ -15,17 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('email')->unique();
-            $table->integer('type');
-//            2 types: 1 for manager, 2 for employee
+            $table->integer('type'); //2 types: 1 for manager, 2 for employee
             $table->string('title');
             $table->string('password');
             $table->foreignId('company_id')->constrained();
             $table->rememberToken();
-            $table->integer('is_first_login');
-            // 1 for first login, 0 for not first login
+            $table->integer('is_first_login'); // 1 for first login, 0 for not first login
             $table->string('email_verified_token')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('phone');
+            $table->string('phone')->nullable();
             $table->timestamps();
         });
     }

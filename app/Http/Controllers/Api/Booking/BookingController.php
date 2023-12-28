@@ -68,7 +68,6 @@ class BookingController extends Controller
                     'booking_title' => $request->booking_title,
                     'booking_company' => $request->booking_company,
                     'sharing_confirmation' => $request->sharing_confirmation,
-
                 ]);
                 if(Auth::user()){
                     $booking->users()->attach(Auth::user());
@@ -115,6 +114,7 @@ class BookingController extends Controller
         } catch (\Exception $e) {
             // If an error occurs, rollback the transaction
             DB::rollBack();
+            dd($e);
             return $this->error(null,'Booking not created', 404);
         }
     }

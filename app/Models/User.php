@@ -64,5 +64,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Company::class);
     }
+//  relationship with many-many booking
+    public function bookings()
+    {
+        return $this->belongsToMany(Booking::class);
+    }
 
 }
