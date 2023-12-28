@@ -5,7 +5,6 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Booking\BookingController;
 use App\Http\Controllers\Api\Company\CompanyController;
 use App\Http\Controllers\Api\MeetingRoom\MeetingRoomController;
-use App\Http\Controllers\Api\MeetingRoom\MeetingRoomcontroller;
 use App\Http\Controllers\Api\RolesAndPermissionsController;
 use App\Http\Controllers\Api\User\UserApiController;
 use App\Models\Company;
