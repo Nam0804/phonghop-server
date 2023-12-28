@@ -9,6 +9,10 @@ Once we create a new release we will create a pull request from `develop` to the
 * Branch name example: [feature/hotfix/bug/..etc]/[issue number]-issue-title (e.g. feature/112-adding-login-page)
 * Merge request name example: [issue number] | issue title (e.g. 112 | Adding login page)
 
+Lưu ý trước khi chạy phân quyền:
+* Bước 1: Trước khi chạy hàm assignRole cần chạy migrate db và sau đó chạy php artisan db:seed RolesAndPermissionsSeeder
+* Bước 2: Pass user name vào trong hàm assignRole() để gán quyền cho user
+
 #### Code syntax example
 ```
 
@@ -23,5 +27,4 @@ if($foo) {
 foreach($datas as $data) {
     echo 'Line: ' . $data. "\n";
 }
-
 ```

@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Booking\BookingController;
 use App\Http\Controllers\Api\Company\CompanyController;
 use App\Http\Controllers\Api\MeetingRoom\MeetingRoomController;
+use App\Http\Controllers\Api\RolesAndPermissionsController;
 use App\Http\Controllers\Api\User\UserApiController;
 use App\Models\Company;
 use Illuminate\Support\Facades\Route;
@@ -33,10 +34,10 @@ Route::resource('admins', AdminApiController::class);
 Route::post('/user/register/company',[CompanyController::class,'registerNewCompany']);
 // Authenticated Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    
+
     Route::get('/profile', [UserApiController::class, 'profile']);
-    Route::get('set-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'assignRole']);
-    Route::post('create-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'createNewRole']);
+    Route::get('set-role', [RolesAndPermissionsController::class, 'assignRole']); //route này chỉ chạy khi user đã được assign role admin
+    Route::post('create-role', [RolesAndPermissionsController::class, 'createNewRole']);
     Route::get('/auth/user/reset-password', [UserApiController::class, 'changePassword']);
     Route::resource('bookings', BookingController::class);
     Route::post('/bookings/history/{user_id}', [BookingController::class, 'bookingHistory']);
@@ -64,6 +65,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::group(['middleware' => ['role:admin']], function (){
        Route::resource('admins', AdminApiController::class);
-       Route::resource('roles-and-permissions', \App\Http\Controllers\Api\RolesAndPermissionsController::class);
+       Route::resource('roles-and-permissions', RolesAndPermissionsController::class);
     });
 });
+//route này chạy khi chưa user nào được assign role
+Route::get('assign', [RolesAndPermissionsController::class, 'assignRole']);

@@ -127,41 +127,4 @@ class CompanyController extends Controller
         }
     }
 
-    public function registerNewCompany(CreateCompanyManager $request)
-    {
-        $request->validated($request->all());
-        DB::beginTransaction();
-        try {
-            $company = $this->company->create([
-                'company_name' => $request->company_name,
-                'company_address' => $request->company_address,
-                'company_domain' => $request->company_domain,
-                'company_tax_code' => $request->company_taxcode,
-            ]);
-            if ($company) {
-                $user = $this->user->create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                    'type' => 1,
-                    'phone' => $request->phone,
-                    'title' => $request->title,
-                    'company_id' => $company->id,
-                    'is_first_login' => 0,
-                ]);
-                if ($user) {
-                    DB::commit();
-                    return $this->success([
-                        'data' => [new CompanyResource($company),new UserResource($user)],
-                        'message' => 'Company and Manager created successfully',
-                    ], 200);
-                }
-            }
-
-        } catch (\Exception $e) {
-            // If an error occurs, rollback the transaction
-            DB::rollBack();
-            return $this->error(null,'Company and Manager not created', 404);
-        }
-    }
 }
