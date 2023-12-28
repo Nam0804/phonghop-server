@@ -11,5 +11,5 @@ interface BaseMeetingRoomRepository
     public function update(array $data, string $id): bool;
     public function delete(string $id): bool;
     public function show(string $id): MeetingRoom;
-    public function CompanyMeetingRooms(string $id): LengthAwarePaginator;
+    public function companyFromMeetingRoom(string $id):int;
 }

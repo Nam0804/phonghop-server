@@ -37,4 +37,8 @@ class MeetingRoomRepository implements BaseMeetingRoomRepository
         return MeetingRoom::where('company_id', $id)->paginate(10);
     }
 
+    public function companyFromMeetingRoom(string $id):int
+    {
+        return MeetingRoom::where('company_id', $id)->first()->company->id;
+    }
 }
