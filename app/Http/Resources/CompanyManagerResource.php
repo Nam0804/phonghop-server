@@ -30,6 +30,9 @@ class CompanyManagerResource extends JsonResource
                      'data' => [
                          'id' => $this->manager->id,
                          'manager_name' => $this->manager->name,
+                         'manager_email' => $this->manager->email,
+                         'manager_phone' => $this->manager->phone,
+                            'manager_title' => $this->manager->title,
                      ],
                  ],
              ],
