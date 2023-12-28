@@ -40,10 +40,10 @@ class RolesAndPermissionsController
     public function assignRole(): \Illuminate\Http\JsonResponse
     {
         try{
-//           $this->rolesRepository->assignRole('demo-staff-role', 'user');
-            // $this->rolesRepository->assignRole('trung', 'admin');
-          $this->rolesRepository->assignRole('trung', 'manager');
-//           $this->rolesRepository->assignRole('demo-guest-role', 'guest');
+           $this->rolesRepository->assignRole(2, 'user');
+             $this->rolesRepository->assignRole(0, 'admin');
+          $this->rolesRepository->assignRole(1, 'manager');
+           $this->rolesRepository->assignRole('guest', 'guest');
         //    $user = User::where('name','trung')->first();
         //    $role = $user->getRoleNames();
         //    dd($role);

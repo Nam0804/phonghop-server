@@ -116,7 +116,7 @@ class CompanyController extends Controller
                 if ($user) {
                     DB::commit();
                     return $this->success([
-                        'data' => [new CompanyResource($company),new UserResource($user)],
+                        'data' => ['company'=>new CompanyResource($company),'manager'=>new UserResource($user)],
                         'message' => 'Company and Manager created successfully',
                     ], 200);
                 }
@@ -126,15 +126,6 @@ class CompanyController extends Controller
             // If an error occurs, rollback the transaction
             DB::rollBack();
             return $this->error(null,'Company and Manager not created', 404);
-        }
-    }
-    public function managerShowCompany()
-    {
-//        $this->company->managerShowCompany()
-        $user = auth('sanctum')->user();
-        dd($user->type);
-        if($user->type ==1){
-            dd('check');
         }
     }
 
