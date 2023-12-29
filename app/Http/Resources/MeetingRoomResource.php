@@ -16,18 +16,16 @@ class MeetingRoomResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'attributes' => [
-                'name' => $this->name,
-                'location' => $this->location,
-                'floor' => $this->floor,
-                'capacity' => $this->capacity,
-                'equipment' => $this->equipment,
-                'image' => $this->image,
-                'availability' => $this->availability,
-                'company_id' => $this->company_id,
-                'created_at' => $this->created_at,
-                'updated_at' => $this->updated_at
-            ],
+            'name' => $this->name,
+            'location' => $this->location,
+            'floor' => $this->floor,
+            'capacity' => $this->capacity,
+            'equipment' => $this->equipment,
+            'image' => $this->image,
+            'availability' => $this->availability,
+            'company_id' => $this->company_id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at
 
         ];
     }

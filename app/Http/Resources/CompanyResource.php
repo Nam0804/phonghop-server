@@ -17,14 +17,13 @@ class CompanyResource extends JsonResource
         // return parent::toArray($request);
         return [
             'id' => $this->id,
-            'attributes' => [
-                'name' => $this->company_name,
-                'address' => $this->company_address,
-                'domain' => $this->company_domain,
-                'tax_code' => $this->company_tax_code,
-                'created_at' => $this->created_at,
-                'updated_at' => $this->updated_at,
-            ],
+            'name' => $this->company_name,
+            'address' => $this->company_address,
+            'domain' => $this->company_domain,
+            'tax_code' => $this->company_tax_code,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+
         ];
     }
 }
