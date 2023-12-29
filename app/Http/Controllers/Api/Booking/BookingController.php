@@ -270,4 +270,28 @@ class BookingController extends Controller
             return $this->error(null, 'Booking history not found', 404);
         }
     }
+    public function meetingNotes($booking_id){
+        $meeting_notes = $this->booking->meetingNotes($booking_id);
+        return BookingResource::collection($meeting_notes);
+    }
+
+    public function createMeetingNotes(Request $request,$booking_id){
+        $booking = $this->booking->show($booking_id);
+        if ($booking) {
+            $meeting_note = $booking->meeting_notes()->create([
+                'user_id' => Auth::user()->id,
+                'note' => $request->note,
+            ]);
+            if ($meeting_note) {
+                return $this->success([
+                    'data' => new MeetingNoteResource($meeting_note),
+                    'message' => 'Meeting note created successfully',
+                ], 200);
+            }else{
+                return $this->error(null,'Meeting note not created', 404);
+            }
+        }else{
+            return $this->error(null,'Booking not found', 404);
+        }
+    }
 }

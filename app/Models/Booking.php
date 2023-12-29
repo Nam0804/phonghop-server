@@ -48,4 +48,8 @@ class Booking extends Model
     {
         return $this->hasMany(Material::class);
     }
+    public function meeting_notes()
+    {
+        return $this->hasMany(MeetingNote::class);
+    }
 }

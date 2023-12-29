@@ -12,4 +12,6 @@ interface BaseBookingRepository
     public function delete(string $id): bool;
     public function show(string $id): Booking;
     public function checkTime(string $from_time,string $to_time,string $meeting_room_id): bool;
+    public function meetingNotes(string $id): LengthAwarePaginator;
+
 }

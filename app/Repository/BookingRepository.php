@@ -60,4 +60,8 @@ class BookingRepository implements BaseBookingRepository
         }
         return true;
     }
+    public function meetingNotes(string $id): LengthAwarePaginator
+    {
+        return Booking::findOrFail($id)->meeting_notes()->paginate(10);
+    }
 }
