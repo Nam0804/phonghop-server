@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Booking;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookingLoggedRequest;
 use App\Http\Requests\BookingRequest;
+use App\Http\Resources\BookingNoteResource;
 use App\Http\Resources\BookingResource;
 use App\Http\Resources\BookingWithRegisterResource;
 use App\Http\Resources\UserResource;
@@ -273,7 +274,8 @@ class BookingController extends Controller
     }
     public function meetingNotes($booking_id){
         $meeting_notes = $this->booking->meetingNotes($booking_id);
-        return BookingResource::collection($meeting_notes);
+        // dd($meeting_notes);
+        return BookingNoteResource::collection($meeting_notes);
     }
 
     public function createMeetingNotes(Request $request,$booking_id){

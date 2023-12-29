@@ -64,6 +64,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('delete-users/{id}', [UserApiController::class, 'destroy'])->middleware('permission:delete-user');
 
     Route::post('meeting-note/{id}',[BookingController::class, 'meetingNotes']);
+    Route::post('create-meeting-note/{id}',[BookingController::class, 'createMeetingNotes']);
+
 
     Route::group(['middleware' => ['role:admin']], function (){
        Route::resource('admins', AdminApiController::class);

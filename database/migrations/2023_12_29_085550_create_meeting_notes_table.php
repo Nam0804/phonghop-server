@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('meeting_notes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('booking_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+            $table->string('note');
             $table->timestamps();
         });
     }
