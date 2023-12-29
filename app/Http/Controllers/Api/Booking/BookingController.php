@@ -8,6 +8,7 @@ use App\Http\Requests\BookingRequest;
 use App\Http\Resources\BookingResource;
 use App\Http\Resources\BookingWithRegisterResource;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\MeetingNoteResource;
 use App\Repository\GuestRepository;
 use App\Repository\interface\BaseBookingRepository;
 use App\Repository\interface\BaseMaterialRepository;
