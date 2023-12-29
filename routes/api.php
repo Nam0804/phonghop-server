@@ -63,6 +63,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('update-user/{id}', [UserApiController::class, 'update'])->middleware('permission:update-user-information');
     Route::delete('delete-users/{id}', [UserApiController::class, 'destroy'])->middleware('permission:delete-user');
 
+    Route::post('meeting-note/{id}',[BookingController::class, 'meetingNotes']);
 
     Route::group(['middleware' => ['role:admin']], function (){
        Route::resource('admins', AdminApiController::class);
