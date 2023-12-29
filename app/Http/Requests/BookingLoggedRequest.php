@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Models\Booking;
 use Illuminate\Foundation\Http\FormRequest;
 
-class BookingRequest extends FormRequest
+class BookingLoggedRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,11 +31,6 @@ class BookingRequest extends FormRequest
             'type_of_booking' => ['required', 'string'],
             'agenda' => ['string'],
             'objective' => ['string'],
-            'register_status'=>['integer'],
-            'sharing_confirmation' => ['integer'],
-            'booking_name' => ['required', 'string'],
-            'booking_email' => ['required', 'string', 'email'],
-            'booking_title' => ['required', 'string'],
         ];
     }
 

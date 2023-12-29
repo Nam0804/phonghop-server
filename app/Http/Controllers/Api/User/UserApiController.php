@@ -36,18 +36,24 @@ class UserApiController extends Controller
     public function store(StoreUserRequest $request)
     {
         $request->validated($request->all());
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@!#$%^&*';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < 8; $i++) {
+            $randomString .= $characters[random_int(0, $charactersLength - 1)];
+        };
         $user = $this->user->create([
             'name' => $request->name,
             'email' => $request->email,
-           'password' => Hash::make($request->password),
+           'password' => Hash::make($randomString),
            'type' => $request->type,
             'phone' => $request->phone,
             'title' => $request->title,
             'company_id' => $request->company_id,
-            'is_first_login' => 0,
+            'is_first_login' => 1,
         ]);
         if ($user) {
-            Mail::to($user->email)->send(new SendCreateMail($user->email, $request->password, $user->name));
+            Mail::to($user->email)->send(new SendCreateMail($user->email, $randomString, $user->name));
         }
         return $this->success([
             'data' => new UserResource($user),
@@ -151,5 +157,4 @@ class UserApiController extends Controller
             return $this->error(null, 'User not found', 400);
         }
     }
-    
 }

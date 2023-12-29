@@ -26,7 +26,7 @@ class BookingResource extends JsonResource
                 'agenda' => $this->agenda,
                 'guests' => $this->guests,
                 'objective' > $this->objective,
-                'material' => $this->material,
+                'material' => $this->materials,
                 'sharing_confirmation' => $this->sharing_confirmation,
                 'booking_name' => $this->booking_name,
                 'booking_email' => $this->booking_email,

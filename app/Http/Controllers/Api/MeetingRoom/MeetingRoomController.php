@@ -25,7 +25,14 @@ class MeetingRoomController extends Controller
     {
         $company_id = Auth::user()->company_id;
         $meetingRooms = $this->meetingRoom->list($company_id);
-        return $meetingRooms;
+        if ($meetingRooms) {
+            return $this->success([
+                'data' => MeetingRoomResource::collection($meetingRooms),
+                'message' => 'Meeting Room list retrive successfully',
+            ], 200);
+        } else {
+            return $this->error(null, 'Meeting Room not retrive', 400);
+        }
     }
 
     /**
@@ -108,8 +115,9 @@ class MeetingRoomController extends Controller
     {
         //logic for this function
     }
-    public function CompanyMeetingRooms(string $company_id)
+    public function CompanyMeetingRooms()
     {
+        $company_id = Auth::user()->company_id;
         $meetingRooms = $this->meetingRoom->CompanyMeetingRooms($company_id);
         if ($meetingRooms) {
             return $this->success([

@@ -31,7 +31,7 @@ class Company extends Model
     }
 
     public function manager(){
-        return $this->hasOne(User::class, 'company_id', 'id')->where('type', 1);
+        return $this->hasOne(User::class, 'company_id', 'id')->where('type', 1)->orwhere('type',0);
     }
 
 //    relationship with many meeting rooms

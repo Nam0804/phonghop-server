@@ -44,4 +44,8 @@ class Booking extends Model
     {
         return $this->belongsToMany(User::class);
     }
+    public function materials()
+    {
+        return $this->hasMany(Material::class);
+    }
 }
