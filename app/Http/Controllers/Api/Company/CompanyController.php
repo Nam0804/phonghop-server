@@ -95,6 +95,7 @@ class CompanyController extends Controller
     {
         $request->validated($request->all());
         DB::beginTransaction();
+
         try {
             $company = $this->company->create([
                 'company_name' => $request->company_name,
@@ -125,7 +126,7 @@ class CompanyController extends Controller
         } catch (\Exception $e) {
             // If an error occurs, rollback the transaction
             DB::rollBack();
-            return $this->error(null,'Company and Manager not created', 404);
+            return $this->error(null,'Company and Manager not created', 400);
         }
     }
 

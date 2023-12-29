@@ -26,7 +26,7 @@ class StoreAdminRequest extends FormRequest
     {
         return [
             'adm_name'=>['required', 'string', 'max:255'],
-            'adm_email'=>['required', 'string', 'email', 'max:255', 'unique:admins'],
+            'adm_email'=>['required', 'string', 'email', 'max:255', 'unique:admins,email'],
             'adm_phone'=>['required', 'string', 'max:255'],
             'adm_password'=>['required', 'string', 'min:8', 'confirmed',Rules\Password::defaults()],
             'adm_role'=>['required','integer'],
