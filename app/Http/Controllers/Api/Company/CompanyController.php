@@ -84,8 +84,9 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Company $company)
+    public function destroy(string $id)
     {
+        $company = Company::findOrFail($id);
         $company->delete();
         return $this->success(null, 'Company deleted successfully', 200);
 

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('booking_id')->constrained();
+            $table->foreignId('booking_id')->constrained()->onDelete('cascade');
             $table->string('material_path');
             $table->timestamps();
         });

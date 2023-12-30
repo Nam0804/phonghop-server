@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('image',500)->nullable();
             $table->string('availability')->default(1);
             // default 1 means available
-            $table->foreignId('company_id')->constrained();
+            $table->foreignId('company_id')->constrained()->onDelete('cascade');
             $table->timestamps();
 
         });
