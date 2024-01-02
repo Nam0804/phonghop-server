@@ -13,7 +13,7 @@ class RolesAndPermissionsController
     private RolesRepository $rolesRepository;
 
     function __construct(PermissionsRepository $permissionsRepository,
-                         RolesRepository       $rolesRepository)
+        RolesRepository $rolesRepository)
     {
         $this->permissionsRepository = $permissionsRepository;
         $this->rolesRepository = $rolesRepository;
@@ -21,7 +21,7 @@ class RolesAndPermissionsController
 
     public function index(): \Illuminate\Http\JsonResponse
     {
-        try{
+        try {
             $permissions = $this->permissionsRepository->index();
             $role = $this->rolesRepository->index();
             $statusCode = 200;
@@ -34,34 +34,40 @@ class RolesAndPermissionsController
         return response()->json([
             'permissions' => $permissions,
             'role' => $role
-            ], $statusCode);
+        ], $statusCode);
     }
 
     public function assignRole(): \Illuminate\Http\JsonResponse
     {
-        try{
-           $this->rolesRepository->assignRole(2, 'user');
+        /** 
+         * Bước 1: Trước khi chạy hàm assignRole cần chạy migrate db và sau đó chạy php artisan db:seed RolesAndPermissionsSeeder
+         * Bước 2: Pass user name vào trong hàm assignRole() để gán quyền cho user
+         * **/
+
+        try {
+            $this->rolesRepository->assignRole(2, 'user');
              $this->rolesRepository->assignRole(0, 'admin');
-          $this->rolesRepository->assignRole(1, 'manager');
-//           $this->rolesRepository->assignRole('guest', 'guest');
-        //    $user = User::where('name','trung')->first();
+           $this->rolesRepository->assignRole(1, 'manager');
+ //           $this->rolesRepository->assignRole('guest', 'guest');
+                    //    $user = User::where('name','trung')->first();
         //    $role = $user->getRoleNames();
         //    dd($role);
             $message = 'Role assigned successfully';
             $statusCode = 200;
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
+            //            $role = null;
             $statusCode = 500;
             $message = 'Role assigned failed';
         }
         return response()->json([
-//            'role' => $role,
+            //            'role' => $role,
             'message' => $message,
         ], $statusCode);
     }
 
     public function showRole($request): \Illuminate\Http\JsonResponse
     {
-        try{
+        try {
             $roleByUser = $this->rolesRepository->showRole($request->user_id);
             $statusCode = 200;
         } catch (\Exception $e) {
@@ -73,7 +79,7 @@ class RolesAndPermissionsController
     }
     public function showPermissions(Request $request): \Illuminate\Http\JsonResponse
     {
-        try{
+        try {
             $permissionList = $this->permissionsRepository->showPermissionByRole($request->user_id);
             $statusCode = 200;
         } catch (\Exception $e) {
