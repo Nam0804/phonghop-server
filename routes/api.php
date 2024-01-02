@@ -32,6 +32,9 @@ Route::get('/users/company/{company_id}', [UserApiController::class, 'CompanyUse
 Route::get('/auth/verify-email/{token}', [UserApiController::class, 'verifyEmail'])->name('verify.email');
 Route::resource('admins', AdminApiController::class);
 Route::post('/user/register/company',[CompanyController::class,'registerNewCompany']);
+Route::get('set-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'assignRole']);
+Route::resource('bookings', BookingController::class);
+
 // Authenticated Route
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
@@ -39,28 +42,31 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('set-role', [RolesAndPermissionsController::class, 'assignRole']); //route này chỉ chạy khi user đã được assign role admin
     Route::post('create-role', [RolesAndPermissionsController::class, 'createNewRole']);
     Route::get('/auth/user/reset-password', [UserApiController::class, 'changePassword']);
-    Route::resource('bookings', BookingController::class);
-    Route::post('/bookings/history/{user_id}', [BookingController::class, 'bookingHistory']);
+    Route::post('/bookings/history', [BookingController::class, 'bookingHistory']);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
-    Route::get('/meeting-rooms/listing/{company_id}', [MeetingRoomcontroller::class, 'CompanyMeetingRooms']);
+    Route::post('/external-bookings', [BookingController::class, 'loggedStore']);
+    Route::get('/meeting-rooms/listing', [MeetingRoomController::class, 'CompanyMeetingRooms']);
 
     Route::get('index-companies', [CompanyController::class, 'index'])->middleware('permission:show-all-company');
     Route::post('store-company', [CompanyController::class, 'store'])->middleware('permission:add-company');
     Route::get('show-company/{id}', [CompanyController::class, 'show'])->middleware('permission:show-company');
-    Route::put('update-company/{id}', [CompanyController::class, 'update'])->middleware('permission:update-company');
+    Route::patch('update-company/{id}', [CompanyController::class, 'update'])->middleware('permission:update-company');
     Route::delete('delete-company/{id}', [CompanyController::class, 'destroy'])->middleware('permission:delete-company');
 
-    Route::get('index-meeting-rooms', [MeetingRoomcontroller::class, 'index'])->middleware('permission:show-all-meeting-rooms');
-    Route::post('store-meeting-room', [MeetingRoomcontroller::class, 'store'])->middleware('permission:add-meeting-rooms');
-    Route::get('show-meeting-room/{id}', [MeetingRoomcontroller::class, 'show'])->middleware('permission:show-meeting-rooms');
-    Route::put('update-meeting-room/{id}', [MeetingRoomcontroller::class, 'update'])->middleware('permission:update-meeting-rooms');
-    Route::delete('delete-meeting-room/{id}', [MeetingRoomcontroller::class, 'destroy'])->middleware('permission:delete-meeting-rooms');
+    Route::get('index-meeting-rooms', [MeetingRoomController::class, 'index'])->middleware('permission:show-all-meeting-rooms');
+    Route::post('store-meeting-room', [MeetingRoomController::class, 'store'])->middleware('permission:add-meeting-rooms');
+    Route::get('show-meeting-room/{id}', [MeetingRoomController::class, 'show'])->middleware('permission:show-meeting-rooms');
+    Route::patch('update-meeting-room/{id}', [MeetingRoomController::class, 'update'])->middleware('permission:update-meeting-rooms');
+    Route::delete('delete-meeting-room/{id}', [MeetingRoomController::class, 'destroy'])->middleware('permission:delete-meeting-rooms');
 
     Route::get('index-users', [UserApiController::class, 'index'])->middleware('permission:show-users-information');
     Route::post('store-user', [UserApiController::class, 'store'])->middleware('permission:add-new-users');
     Route::get('show-user/{id}', [UserApiController::class, 'show'])->middleware('permission:show-users-details-information');
     Route::put('update-user/{id}', [UserApiController::class, 'update'])->middleware('permission:update-user-information');
     Route::delete('delete-users/{id}', [UserApiController::class, 'destroy'])->middleware('permission:delete-user');
+
+    Route::post('meeting-note/{id}',[BookingController::class, 'meetingNotes']);
+    Route::post('create-meeting-note/{id}',[BookingController::class, 'createMeetingNotes']);
 
 
     Route::group(['middleware' => ['role:admin']], function (){

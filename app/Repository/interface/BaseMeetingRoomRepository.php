@@ -12,4 +12,5 @@ interface BaseMeetingRoomRepository
     public function delete(string $id): bool;
     public function show(string $id): MeetingRoom;
     public function companyFromMeetingRoom(string $id):int;
+    public function CompanyMeetingRooms(string $id);
 }

@@ -13,10 +13,10 @@ class RolesRepository implements RolesRepositoryInterface
         return Role::all();
     }
 
-    public function assignRole($userName, $role): void
+    public function assignRole($type, $role): void
     {
         $role = Role::findByName($role);
-        $newAssignedRole = User::where('name', $userName)->first();
+        $newAssignedRole = User::where('type', $type)->first();
         $newAssignedRole->assignRole($role);
     }
 

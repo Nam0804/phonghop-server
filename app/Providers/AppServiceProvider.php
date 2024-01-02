@@ -11,7 +11,11 @@ use App\Repository\UserRepository;
 use App\Repository\interface\BaseAdminRepository;
 use App\Repository\AdminRepository;
 use App\Repository\CompanyRepository;
+use App\Repository\GuestRepository;
 use App\Repository\interface\BaseCompanyRepository;
+use App\Repository\interface\BaseGuestRepository;
+use App\Repository\interface\BaseMaterialRepository;
+use App\Repository\MaterialRepository;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(BaseBookingRepository::class, BookingRepository::class);
         $this->app->bind(BaseGuestRepository::class, GuestRepository::class);
         $this->app->bind(BaseCompanyRepository::class, CompanyRepository::class);
+        $this->app->bind(BaseMaterialRepository::class, MaterialRepository::class);
+
 
     }
 

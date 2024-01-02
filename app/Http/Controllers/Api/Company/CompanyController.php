@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Company;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Company\CreateCompanyManager;
 use App\Http\Requests\Company\StoreCompanyRequest;
+use App\Http\Resources\CompanyManagerResource;
 use App\Http\Resources\CompanyResource;
 use App\Http\Resources\UserResource;
 use App\Models\Company;
@@ -31,10 +32,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        return CompanyResource::collection(
-            Company::all());
-
-
+        $list_company = $this->company->list();
+            return $this->success( CompanyManagerResource::collection($list_company),'Companies listing successfully', 201);
     }
 
     /**
@@ -47,10 +46,7 @@ class CompanyController extends Controller
     {
         $company = Company::create($request->validated());
 
-        return $this->success([
-            'data' => new CompanyResource($company),
-            'message' => 'Company created successfully',
-        ], 201);
+        return $this->success( new CompanyResource($company), 'Company created successfully', 201);
 
     }
 
@@ -72,18 +68,24 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Company $company)
+    public function update(Request $request, string $id)
     {
-        $company->update($request->all());
-        return new CompanyResource($company);
+        $updated_company = $this->company->update($request->all(), $id);
+        if ($updated_company) {
+            $company = $this->company->show($id);
+            return $this->success( new CompanyResource($company), 'Company updated successfully',200);
+        } else {
+            return $this->error(null, 'Company not updated', 400);
+        }
 
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Company $company)
+    public function destroy(string $id)
     {
+        $company = Company::findOrFail($id);
         $company->delete();
         return $this->success(null, 'Company deleted successfully', 200);
 
@@ -93,6 +95,7 @@ class CompanyController extends Controller
     {
         $request->validated($request->all());
         DB::beginTransaction();
+
         try {
             $company = $this->company->create([
                 'company_name' => $request->company_name,
@@ -113,17 +116,14 @@ class CompanyController extends Controller
                 ]);
                 if ($user) {
                     DB::commit();
-                    return $this->success([
-                        'data' => [new CompanyResource($company),new UserResource($user)],
-                        'message' => 'Company and Manager created successfully',
-                    ], 200);
+                    return $this->success( ['company'=>new CompanyResource($company),'manager'=>new UserResource($user)], 'Company and Manager created successfully', 200);
                 }
             }
 
         } catch (\Exception $e) {
             // If an error occurs, rollback the transaction
             DB::rollBack();
-            return $this->error(null,'Company and Manager not created', 404);
+            return $this->error(null,'Company and Manager not created', 400);
         }
     }
 

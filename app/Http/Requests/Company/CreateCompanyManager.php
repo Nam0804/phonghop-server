@@ -29,7 +29,7 @@ class CreateCompanyManager extends FormRequest
             'company_domain' => 'required|string|max:255',
             'company_tax_code' => 'string|max:255',
             'name'=>['required', 'string', 'max:255'],
-            'email'=>['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email'=>['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password'=>['required', 'string', 'min:8', 'confirmed',Rules\Password::defaults()],
             'title'=>['required', 'string', 'max:255'],
             'phone'=>['required', 'numeric'],

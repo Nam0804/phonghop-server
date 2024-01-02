@@ -11,5 +11,5 @@ interface BaseCompanyRepository
     public function update(array $data, string $id): bool;
     public function delete(string $id): bool;
     public function show(string $id): Company;
-
 }
+

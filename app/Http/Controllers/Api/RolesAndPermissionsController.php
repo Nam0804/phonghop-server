@@ -45,12 +45,13 @@ class RolesAndPermissionsController
          * **/
 
         try {
-            $this->rolesRepository->assignRole('demo-staff-role', 'user');
-            $this->rolesRepository->assignRole('demo-admin-role', 'admin');
-            $this->rolesRepository->assignRole('demo-manager-role', 'manager');
-            $this->rolesRepository->assignRole('demo-guest-role', 'guest');
-            //            $user = User::where('name','demo-admin-role')->first();
-//            $role = $user->getRoleNames();
+            $this->rolesRepository->assignRole(2, 'user');
+             $this->rolesRepository->assignRole(0, 'admin');
+           $this->rolesRepository->assignRole(1, 'manager');
+ //           $this->rolesRepository->assignRole('guest', 'guest');
+                    //    $user = User::where('name','trung')->first();
+        //    $role = $user->getRoleNames();
+        //    dd($role);
             $message = 'Role assigned successfully';
             $statusCode = 200;
         } catch (\Exception $e) {

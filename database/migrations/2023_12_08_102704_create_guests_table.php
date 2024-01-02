@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('guests', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('booking_id')->constrained();
+            $table->foreignId('booking_id')->constrained()->onDelete('cascade');
             $table->string('email');
             $table->timestamps();
         });

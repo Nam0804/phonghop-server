@@ -25,7 +25,11 @@ class MeetingRoomController extends Controller
     {
         $company_id = Auth::user()->company_id;
         $meetingRooms = $this->meetingRoom->list($company_id);
-        return $meetingRooms;
+        if ($meetingRooms) {
+            return $this->success( MeetingRoomResource::collection($meetingRooms), 'Meeting Room list retrive successfully', 200);
+        } else {
+            return $this->error(null, 'Meeting Room not retrive', 400);
+        }
     }
 
     /**
@@ -59,10 +63,7 @@ class MeetingRoomController extends Controller
         }
 
         if ($meetingRoom) {
-            return $this->success([
-                'data' => new MeetingRoomResource($meetingRoom),
-                'message' => 'Meeting Room created successfully',
-            ], 200);
+            return $this->success( new MeetingRoomResource($meetingRoom),'Meeting Room created successfully', 200);
         } else {
             return $this->error(null, 'Meeting Room not created', 400);
         }
@@ -76,10 +77,7 @@ class MeetingRoomController extends Controller
     {
         $meetingRoom = $this->meetingRoom->show($id);
         if ($meetingRoom) {
-            return $this->success([
-                'data' => new MeetingRoomResource($meetingRoom),
-                'message' => 'Meeting Room found successfully',
-            ], 200);
+            return $this->success( new MeetingRoomResource($meetingRoom),'Meeting Room found successfully', 200);
         } else {
             return $this->error(null, 'Meeting Room not found', 400);
         }
@@ -90,12 +88,10 @@ class MeetingRoomController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $meetingRoom = $this->meetingRoom->update($request->all(), $id);
-        if ($meetingRoom) {
-            return $this->success([
-                'data' => new MeetingRoomResource($meetingRoom),
-                'message' => 'Meeting Room updated successfully',
-            ], 200);
+        $updated_room = $this->meetingRoom->update($request->all(), $id);
+        if ($updated_room) {
+            $room = $this->meetingRoom->show($id);
+            return $this->success( new MeetingRoomResource($room), 'Meeting Room updated successfully',200);
         } else {
             return $this->error(null, 'Meeting Room not updated', 400);
         }
@@ -108,14 +104,12 @@ class MeetingRoomController extends Controller
     {
         //logic for this function
     }
-    public function CompanyMeetingRooms(string $company_id)
+    public function CompanyMeetingRooms()
     {
+        $company_id = Auth::user()->company_id;
         $meetingRooms = $this->meetingRoom->CompanyMeetingRooms($company_id);
         if ($meetingRooms) {
-            return $this->success([
-                'data' => MeetingRoomResource::collection($meetingRooms),
-                'message' => null,
-            ], 200);
+            return $this->success(MeetingRoomResource::collection($meetingRooms), null, 200);
         } else {
             return $this->error(null, 'Meeting Rooms not found', 400);
         }
