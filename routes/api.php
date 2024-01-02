@@ -40,7 +40,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/profile', [UserApiController::class, 'profile']);
     Route::post('create-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'createNewRole']);
     Route::get('/auth/user/reset-password', [UserApiController::class, 'changePassword']);
-    Route::post('/bookings/history/{user_id}', [BookingController::class, 'bookingHistory']);
+    Route::post('/bookings/history', [BookingController::class, 'bookingHistory']);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::post('/external-bookings', [BookingController::class, 'loggedStore']);
     Route::get('/meeting-rooms/listing', [MeetingRoomController::class, 'CompanyMeetingRooms']);
@@ -48,13 +48,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('index-companies', [CompanyController::class, 'index'])->middleware('permission:show-all-company');
     Route::post('store-company', [CompanyController::class, 'store'])->middleware('permission:add-company');
     Route::get('show-company/{id}', [CompanyController::class, 'show'])->middleware('permission:show-company');
-    Route::put('update-company/{id}', [CompanyController::class, 'update'])->middleware('permission:update-company');
+    Route::patch('update-company/{id}', [CompanyController::class, 'update'])->middleware('permission:update-company');
     Route::delete('delete-company/{id}', [CompanyController::class, 'destroy'])->middleware('permission:delete-company');
 
     Route::get('index-meeting-rooms', [MeetingRoomController::class, 'index'])->middleware('permission:show-all-meeting-rooms');
     Route::post('store-meeting-room', [MeetingRoomController::class, 'store'])->middleware('permission:add-meeting-rooms');
     Route::get('show-meeting-room/{id}', [MeetingRoomController::class, 'show'])->middleware('permission:show-meeting-rooms');
-    Route::put('update-meeting-room/{id}', [MeetingRoomController::class, 'update'])->middleware('permission:update-meeting-rooms');
+    Route::patch('update-meeting-room/{id}', [MeetingRoomController::class, 'update'])->middleware('permission:update-meeting-rooms');
     Route::delete('delete-meeting-room/{id}', [MeetingRoomController::class, 'destroy'])->middleware('permission:delete-meeting-rooms');
 
     Route::get('index-users', [UserApiController::class, 'index'])->middleware('permission:show-users-information');

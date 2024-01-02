@@ -55,10 +55,7 @@ class UserApiController extends Controller
         if ($user) {
             Mail::to($user->email)->send(new SendCreateMail($user->email, $randomString, $user->name));
         }
-        return $this->success([
-            'data' => new UserResource($user),
-            'message' => 'User created successfully',
-        ], 200);
+        return $this->success(new UserResource($user),'User created successfully', 200);
     }
 
     /**
@@ -67,10 +64,7 @@ class UserApiController extends Controller
     public function show(string $id)
     {
         $user = $this->user->show($id);
-        return $this->success([
-            'data' => new UserResource($user),
-            'message' => null,
-        ], 201);
+        return $this->success( new UserResource($user), 'User retrieved successfully ', 201);
     }
 
     /**
@@ -81,10 +75,7 @@ class UserApiController extends Controller
         $update = $this->user->update($request->all(), $id);
         if ($update) {
             $user = $this->user->show($id);
-            return $this->success([
-                'data' => new UserResource($user),
-                'message' => 'User updated successfully',
-            ], 200);
+            return $this->success( new UserResource($user), 'User updated successfully', 200);
         } else {
             return $this->error(null, 'User not updated', 400);
         }
@@ -97,10 +88,12 @@ class UserApiController extends Controller
     public function destroy(string $id)
     {
         $user = $this->user->delete($id);
-        return $this->success([
-            'data' => null,
-            'message' => 'User deleted successfully',
-        ], 200);
+        if ($user){
+            return $this->success( null, 'User deleted successfully', 200);
+
+        }else{
+            return  $this->error(null,'User can not be deleted',)
+        }
     }
     public function CompanyUsers(string $company_id)
     {

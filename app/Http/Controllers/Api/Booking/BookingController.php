@@ -40,10 +40,8 @@ class BookingController extends Controller
     {
         $booking_list = $this->booking->list();
         if ($booking_list) {
-            return $this->success([
-                'data' =>  BookingResource::collection($booking_list),
-                'message' => 'Booking list retrieved successfully',
-            ], 200);
+            return $this->success(BookingResource::collection($booking_list), 'Booking list retrieved successfully'
+            , 200);
         } else {
             return $this->error(null, 'Booking list not found', 404);
         }
@@ -121,19 +119,13 @@ class BookingController extends Controller
                 if ($user) {
                     $booking->users()->attach($user);
                     DB::commit();
-                    return $this->success([
-                        'data' => [new BookingResource($booking), new UserResource($user)],
-                        'message' => 'Booking created successfully',
-                    ], 200);
+                    return $this->success(['booking'=>new BookingResource($booking),'user'=> new UserResource($user)],'Booking created successfully', 200);
                 }
             }
             // If everything is successful, commit the transaction
             DB::commit();
 
-            return $this->success([
-                'data' => new BookingResource($booking),
-                'message' => 'Booking created successfully',
-            ], 200);
+            return $this->success( new BookingResource($booking), 'Booking created successfully', 200);
         } catch (\Exception $e) {
             // If an error occurs, rollback the transaction
             DB::rollBack();
@@ -199,10 +191,7 @@ class BookingController extends Controller
             // If everything is successful, commit the transaction
             DB::commit();
 
-            return $this->success([
-                'data' => new BookingResource($booking),
-                'message' => 'Booking created successfully',
-            ], 200);
+            return $this->success( new BookingResource($booking), 'Booking created successfully', 200);
         } catch (\Exception $e) {
             // If an error occurs, rollback the transaction
             DB::rollBack();
@@ -218,10 +207,7 @@ class BookingController extends Controller
     {
         $booking = $this->booking->show($id);
         if ($booking) {
-            return $this->success([
-                'data' => new BookingResource($booking),
-                'message' => 'Booking retrieved successfully',
-            ], 200);
+            return $this->success( new BookingResource($booking),'Booking retrieved successfully', 200);
         } else {
             return $this->error(null, 'Booking not found', 404);
         }
@@ -235,10 +221,7 @@ class BookingController extends Controller
     {
         $booking = $this->booking->update($request->all(), $id);
         if ($booking) {
-            return $this->success([
-                'data' => new BookingResource($booking),
-                'message' => 'Booking updated successfully',
-            ], 200);
+            return $this->success( new BookingResource($booking),'Booking updated successfully', 200);
         } else {
             return $this->error(null, 'Booking not updated', 404);
         }
@@ -251,30 +234,24 @@ class BookingController extends Controller
     {
         $booking = $this->booking->delete($id);
         if ($booking) {
-            return $this->success([
-                'data' => new BookingResource($booking),
-                'message' => 'Booking deleted successfully',
-            ], 200);
+            return $this->success( new BookingResource($booking),'Booking deleted successfully',200);
         } else {
             return $this->error(null, 'Booking not deleted', 404);
         }
     }
 
-    public function bookingHistory($user_id)
+    public function bookingHistory()
     {
+        $user_id = Auth::user()->id;
         $booking_list = $this->user->bookingHistory($user_id);
         if ($booking_list) {
-            return $this->success([
-                'data' =>  BookingResource::collection($booking_list),
-                'message' => 'Booking history retrieved successfully',
-            ], 200);
+            return $this->success( BookingResource::collection($booking_list),'Booking history retrieved successfully', 200);
         } else {
             return $this->error(null, 'Booking history not found', 404);
         }
     }
     public function meetingNotes($booking_id){
         $meeting_notes = $this->booking->meetingNotes($booking_id);
-        // dd($meeting_notes);
         return BookingNoteResource::collection($meeting_notes);
     }
 
@@ -286,10 +263,7 @@ class BookingController extends Controller
                 'note' => $request->note,
             ]);
             if ($meeting_note) {
-                return $this->success([
-                    'data' => new MeetingNoteResource($meeting_note),
-                    'message' => 'Meeting note created successfully',
-                ], 200);
+                return $this->success( new MeetingNoteResource($meeting_note), 'Meeting note created successfully', 200);
             }else{
                 return $this->error(null,'Meeting note not created', 404);
             }

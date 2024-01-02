@@ -33,10 +33,7 @@ class CompanyController extends Controller
     public function index()
     {
         $list_company = $this->company->list();
-            return $this->success([
-                'data' => CompanyManagerResource::collection($list_company),
-                'message' => 'Companies listing successfully',
-            ], 201);
+            return $this->success( CompanyManagerResource::collection($list_company),'Companies listing successfully', 201);
     }
 
     /**
@@ -49,10 +46,7 @@ class CompanyController extends Controller
     {
         $company = Company::create($request->validated());
 
-        return $this->success([
-            'data' => new CompanyResource($company),
-            'message' => 'Company created successfully',
-        ], 201);
+        return $this->success( new CompanyResource($company), 'Company created successfully', 201);
 
     }
 
@@ -74,10 +68,15 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Company $company)
+    public function update(Request $request, string $id)
     {
-        $company->update($request->all());
-        return new CompanyResource($company);
+        $updated_company = $this->company->update($request->all(), $id);
+        if ($updated_company) {
+            $company = $this->company->show($id);
+            return $this->success( new CompanyResource($company), 'Company updated successfully',200);
+        } else {
+            return $this->error(null, 'Company not updated', 400);
+        }
 
     }
 
@@ -117,10 +116,7 @@ class CompanyController extends Controller
                 ]);
                 if ($user) {
                     DB::commit();
-                    return $this->success([
-                        'data' => ['company'=>new CompanyResource($company),'manager'=>new UserResource($user)],
-                        'message' => 'Company and Manager created successfully',
-                    ], 200);
+                    return $this->success( ['company'=>new CompanyResource($company),'manager'=>new UserResource($user)], 'Company and Manager created successfully', 200);
                 }
             }
 
