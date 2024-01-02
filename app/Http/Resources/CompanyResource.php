@@ -20,7 +20,7 @@ class CompanyResource extends JsonResource
             'name' => $this->company_name,
             'address' => $this->company_address,
             'domain' => $this->company_domain,
-            'tax_code' => $this->company_tax_code,
+            'tax_code' => $this->tax_code,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
 
