@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CompanySeeder extends Seeder
 {
@@ -17,5 +18,6 @@ class CompanySeeder extends Seeder
             'company_address' => '15 Cầu Giấy',
             'company_domain' => 'IT tech',
             'tax_code' => '123456789',
+        ]);
     }
 }

@@ -32,7 +32,7 @@ Route::get('/users/company/{company_id}', [UserApiController::class, 'CompanyUse
 Route::get('/auth/verify-email/{token}', [UserApiController::class, 'verifyEmail'])->name('verify.email');
 Route::resource('admins', AdminApiController::class);
 Route::post('/user/register/company',[CompanyController::class,'registerNewCompany']);
-Route::get('set-role', [\App\Http\Controllers\Api\RolesAndPermissionsController::class, 'assignRole']);
+Route::get('set-role', [RolesAndPermissionsController::class, 'assignRole']);
 Route::resource('bookings', BookingController::class);
 
 // Authenticated Route
@@ -50,7 +50,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('index-companies', [CompanyController::class, 'index'])->middleware('permission:show-all-company');
     Route::post('store-company', [CompanyController::class, 'store'])->middleware('permission:add-company');
     Route::get('show-company/{id}', [CompanyController::class, 'show'])->middleware('permission:show-company');
-    Route::patch('update-company/{id}', [CompanyController::class, 'update'])->middleware('permission:update-company');
+    Route::put('update-company/{id}', [CompanyController::class, 'update'])->middleware('permission:update-company');
     Route::delete('delete-company/{id}', [CompanyController::class, 'destroy'])->middleware('permission:delete-company');
 
     Route::get('index-meeting-rooms', [MeetingRoomController::class, 'index'])->middleware('permission:show-all-meeting-rooms');
@@ -75,4 +75,4 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
 });
 //route này chạy khi chưa user nào được assign role
-Route::get('assign', [RolesAndPermissionsController::class, 'assignRole']);
+// Route::get('assign', [RolesAndPermissionsController::class, 'assignRole']);

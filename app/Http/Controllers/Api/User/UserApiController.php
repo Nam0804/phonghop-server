@@ -92,7 +92,7 @@ class UserApiController extends Controller
             return $this->success( null, 'User deleted successfully', 200);
 
         }else{
-            return  $this->error(null,'User can not be deleted',)
+            return  $this->error(null,'User can not be deleted',402);
         }
     }
     public function CompanyUsers(string $company_id)

@@ -15,8 +15,9 @@ class RolesRepository implements RolesRepositoryInterface
 
     public function assignRole($type, $role): void
     {
-        $role = Role::findByName($role);
+        $role = Role::where('name', $role)->first();
         $newAssignedRole = User::where('type', $type)->first();
+        
         $newAssignedRole->assignRole($role);
     }
 
