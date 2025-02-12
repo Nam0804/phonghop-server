@@ -9,6 +9,7 @@ use App\Repository\interface\BaseMeetingRoomRepository;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class MeetingRoomController extends Controller
 {
@@ -26,7 +27,7 @@ class MeetingRoomController extends Controller
         $company_id = Auth::user()->company_id;
         $meetingRooms = $this->meetingRoom->list($company_id);
         if ($meetingRooms) {
-            return $this->success( MeetingRoomResource::collection($meetingRooms), 'Meeting Room list retrive successfully', 200);
+            return $this->success(MeetingRoomResource::collection($meetingRooms), 'Meeting Room list retrive successfully', 200);
         } else {
             return $this->error(null, 'Meeting Room not retrive', 400);
         }
@@ -39,35 +40,30 @@ class MeetingRoomController extends Controller
     {
         $request->validated($request->all());
         if ($request->hasFile('image')) {
-            $image_path = $request->file('image')->store('image', 'public');
-            $meetingRoom = $this->meetingRoom->create([
-                'name' => $request->name,
-                'location' => $request->location,
-                'floor' => $request->floor,
-                'capacity' => $request->capacity,
-                'equipment' => $request->equipment,
-                'image' => $image_path,
-                'availability' => $request->availability,
-                'company_id' => $request->company_id,
-            ]);
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $filename = uniqid().'.'.$extension; 
+            $image_path = Storage::disk('local')->putFileAs('/public/meeting-room-images', $request->file('image'), $filename);
         } else {
-            $meetingRoom = $this->meetingRoom->create([
-                'name' => $request->name,
-                'location' => $request->location,
-                'floor' => $request->floor,
-                'capacity' => $request->capacity,
-                'equipment' => $request->equipment,
-                'availability' => $request->availability,
-                'company_id' => $request->company_id,
-            ]);
+            // Handle case when no image is provided
+            $image_path = null;
         }
 
+        $meetingRoom = $this->meetingRoom->create([
+            'name' => $request->name,
+            'location' => $request->location,
+            'floor' => $request->floor,
+            'capacity' => $request->capacity,
+            'equipment' => $request->equipment,
+            'image' => $image_path,
+            'availability' => $request->availability,
+            'company_id' => $request->company_id,
+        ]);
+
         if ($meetingRoom) {
-            return $this->success( new MeetingRoomResource($meetingRoom),'Meeting Room created successfully', 200);
+            return $this->success(new MeetingRoomResource($meetingRoom), 'Meeting Room created successfully', 200);
         } else {
             return $this->error(null, 'Meeting Room not created', 400);
         }
-
     }
 
     /**
@@ -77,7 +73,7 @@ class MeetingRoomController extends Controller
     {
         $meetingRoom = $this->meetingRoom->show($id);
         if ($meetingRoom) {
-            return $this->success( new MeetingRoomResource($meetingRoom),'Meeting Room found successfully', 200);
+            return $this->success(new MeetingRoomResource($meetingRoom), 'Meeting Room found successfully', 200);
         } else {
             return $this->error(null, 'Meeting Room not found', 400);
         }
@@ -91,7 +87,7 @@ class MeetingRoomController extends Controller
         $updated_room = $this->meetingRoom->update($request->all(), $id);
         if ($updated_room) {
             $room = $this->meetingRoom->show($id);
-            return $this->success( new MeetingRoomResource($room), 'Meeting Room updated successfully',200);
+            return $this->success(new MeetingRoomResource($room), 'Meeting Room updated successfully', 200);
         } else {
             return $this->error(null, 'Meeting Room not updated', 400);
         }

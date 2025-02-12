@@ -46,6 +46,8 @@ class RolesAndPermissionsController
 
         try {
             $this->rolesRepository->assignRole(0, 'admin');
+            $this->rolesRepository->assignRole(1, 'manager');
+            $this->rolesRepository->assignRole(2, 'user');
             // $user = User::where('type','0')->first();
             // $role = $user->getRoleNames();
            
